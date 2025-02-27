@@ -1,0 +1,6 @@
+name: Oneiros
+version: '0.0.1-ALPHA'
+main: com.senne.oneiros.Oneiros
+api-version: '1.21'
+authors: [ Senne ]
+description: A plugin for creating custom items
