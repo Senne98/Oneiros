@@ -58,7 +58,7 @@ public class PackCreateUIEvent implements Listener {
                     .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the key input.").color(NamedTextColor.RED)))
                     .decoration(TextDecoration.ITALIC, false)
                     .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/cancel key")));
+                    .clickEvent(ClickEvent.runCommand("/oneiroscancel key")));
 
         }
     }

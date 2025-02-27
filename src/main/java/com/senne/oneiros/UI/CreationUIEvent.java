@@ -56,7 +56,7 @@ public class CreationUIEvent implements Listener {
                     .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the name input.").color(NamedTextColor.RED)))
                     .decoration(TextDecoration.ITALIC, false)
                     .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/cancel name")));
+                    .clickEvent(ClickEvent.runCommand("/oneiroscancel name")));
 
             return;
         }
@@ -82,7 +82,7 @@ public class CreationUIEvent implements Listener {
                     .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the custom model data input.").color(NamedTextColor.RED)))
                     .decoration(TextDecoration.ITALIC, false)
                     .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/cancel cmd")));
+                    .clickEvent(ClickEvent.runCommand("/oneiroscancel cmd")));
 
             return;
         }

@@ -60,7 +60,7 @@ public class LoreUIEvent implements Listener {
                     .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the lore input.").color(NamedTextColor.RED)))
                     .decoration(TextDecoration.ITALIC, false)
                     .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/cancel lore")));
+                    .clickEvent(ClickEvent.runCommand("/oneiroscancel lore")));
             return;
         }
 
