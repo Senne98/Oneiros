@@ -1,4 +1,4 @@
-package com.senne.oneiros.UI.chatUI;
+package com.senne.oneiros.UI.itemCreation.chatUI;
 
 import java.util.HashMap;
 import java.util.UUID;

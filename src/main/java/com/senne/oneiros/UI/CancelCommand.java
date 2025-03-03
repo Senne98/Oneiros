@@ -1,8 +1,9 @@
-package com.senne.oneiros.UI.chatUI;
+package com.senne.oneiros.UI;
 
-import com.senne.oneiros.UI.AttributeUI;
-import com.senne.oneiros.UI.CreationUI;
-import com.senne.oneiros.UI.LoreUI;
+import com.senne.oneiros.UI.itemCreation.AttributeUI;
+import com.senne.oneiros.UI.itemCreation.CreationUI;
+import com.senne.oneiros.UI.itemCreation.LoreUI;
+import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;

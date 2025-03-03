@@ -1,6 +1,6 @@
-package com.senne.oneiros.UI.chatUI;
+package com.senne.oneiros.UI.itemCreation.chatUI;
 
-import com.senne.oneiros.UI.LoreUI;
+import com.senne.oneiros.UI.itemCreation.LoreUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import io.papermc.paper.event.player.ChatEvent;
 import net.kyori.adventure.text.Component;

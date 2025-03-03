@@ -1,7 +1,6 @@
-package com.senne.oneiros.UI;
+package com.senne.oneiros.UI.itemCreation;
 
 import com.senne.oneiros.item.ActiveItemCreation;
-import com.senne.oneiros.item.Item;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

@@ -64,3 +64,76 @@ processResources {
         expand props
     }
 }
+
+task configureRun {
+    doFirst {
+        def filePath = '/home/senne/Documents/onedrive/Documenten/mineraft/Oneiros/Oneiros/run/world/session.lock'
+        def file = new File(filePath)
+        if (file.exists()) {
+            file.delete()
+            println "Removing world/session.lock"
+
+        }
+
+        filePath = '/home/senne/Documents/onedrive/Documenten/mineraft/Oneiros/Oneiros/run/world_nether/session.lock'
+        file = new File(filePath)
+        if (file.exists()) {
+            file.delete()
+            println "Removing world_nether/session.lock"
+        }
+
+        filePath = '/home/senne/Documents/onedrive/Documenten/mineraft/Oneiros/Oneiros/run/world_end/session.lock'
+        file = new File(filePath)
+        if (file.exists()) {
+            file.delete()
+            println "Removing world_end/session.lock"
+        }
+
+        def port = 25565 // The port you want to check
+
+        def checkPortCommand = "lsof -i :${port}"
+        def process = checkPortCommand.execute()
+        def output = process.text
+
+        def lines = output.split('\n')
+        def processCount = lines.size() - 1 // Subtract the header line
+
+        if (processCount > 1) {
+            println "Multiple programs are connected to port ${port}. Waiting for 20 seconds."
+            Thread.sleep(20000) // Wait for 5 seconds (5000 milliseconds)
+        } else {
+            println "Less than 2 programs are connected to port ${port}. No need to wait."
+        }
+
+
+        def isPortOpen = false
+        def pid = null
+
+        // Check if the port is open (Unix-based systems)
+        checkPortCommand = "lsof -i :${port}"
+        process = checkPortCommand.execute()
+        output = process.text
+
+        if (output) {
+            isPortOpen = true
+            lines = output.split('\n')
+            // Extract the PID from the lsof command output
+            if (lines.size() > 1) {
+                def columns = lines[1].split()
+                pid = columns[1] // PID is in the second column
+            }
+        }
+
+        if (isPortOpen && pid) {
+            println "Port ${port} is open. Stopping program with PID ${pid}."
+            // Stop the program using the PID (Unix-based systems)
+            def killCommand = "kill -9 ${pid}"
+            killCommand.execute().waitFor()
+
+        }
+    }
+}
+
+tasks.runServer {
+    dependsOn configureRun
+}

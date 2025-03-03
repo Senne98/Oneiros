@@ -1,6 +1,6 @@
-package com.senne.oneiros.UI.chatUI;
+package com.senne.oneiros.UI.itemCreation.chatUI;
 
-import com.senne.oneiros.UI.CreationUI;
+import com.senne.oneiros.UI.itemCreation.PackSelectUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.ItemRegister;
 import com.senne.oneiros.tools.StringUtils;
@@ -10,15 +10,12 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.persistence.PersistentDataType;
 
-public class PackCreateUIEvent implements Listener {
+public class PackCreateTextUIEvent implements Listener {
 
     @EventHandler
     public void onChat(ChatEvent e) {
@@ -45,11 +42,11 @@ public class PackCreateUIEvent implements Listener {
                 return;
             }
 
+            pack = pack.replaceAll(" ", "");
+
             ActiveItemCreation.getActiveItem(player.getUniqueId()).setNamespace(pack);
             ItemRegister.registerPack(pack);
             ActiveChat.removeActiveChat(player.getUniqueId());
-
-            player.closeInventory();
 
             ActiveItemCreation.getActiveItem(player.getUniqueId()).setNamespace(pack);
 
@@ -60,6 +57,8 @@ public class PackCreateUIEvent implements Listener {
                     .color(NamedTextColor.RED)
                     .clickEvent(ClickEvent.runCommand("/oneiroscancel key")));
 
+            PackSelectUI ui = new PackSelectUI(player, 1);
+            player.openInventory(ui.getInventory());
         }
     }
 }

@@ -24,8 +24,8 @@ public class Item implements Serializable {
     private List<Component> lore = new ArrayList<>();
     private List<Attribute> attributes = new ArrayList<>();
     private List<ActionHandler> actionHandlers = new ArrayList<>();
-    private String namespace;
-    private String key;
+    private String namespace = "";
+    private String key = "";
 
     public Item(Material material) {
         this.material = material;
@@ -39,8 +39,8 @@ public class Item implements Serializable {
         meta.displayName(displayName);
         meta.lore(lore);
 
-        if (namespace != null && key != null) {
-            meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "customItem"), new NamespacedKeyDataType(), getNamespacedKey());
+        if (namespace != "" && key != "") {
+            meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "customitem"), new NamespacedKeyDataType(), getNamespacedKey());
         }
 
         item.setItemMeta(meta);

@@ -1,7 +1,7 @@
 package com.senne.oneiros.action;
 
-import com.senne.oneiros.item.ItemRegister;
 import com.senne.oneiros.action.actions.Action;
+import com.senne.oneiros.item.ItemRegister;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 public class ActionListener {
 
     public static boolean runAction(Action action) {
-        ItemRegister.getItems().forEach((key, item) -> {
+        ItemRegister.getItems().forEach((item) -> {
             List<ActionHandler> handlers = item.getActionHandlers();
 
             handlers.forEach(handler -> {

@@ -1,29 +1,26 @@
 package com.senne.oneiros;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.brigadier.suggestion.Suggestions;
-import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.mojang.brigadier.tree.ArgumentCommandNode;
-import com.mojang.brigadier.tree.CommandNode;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.senne.oneiros.UI.*;
-import com.senne.oneiros.UI.chatUI.*;
+import com.senne.oneiros.UI.CancelCommand;
+import com.senne.oneiros.UI.itemCreation.AttributeUIEvent;
+import com.senne.oneiros.UI.itemCreation.CreationUIEvent;
+import com.senne.oneiros.UI.itemCreation.LoreUIEvent;
+import com.senne.oneiros.UI.itemCreation.PackSelectUIEvent;
+import com.senne.oneiros.UI.itemCreation.chatUI.*;
+import com.senne.oneiros.UI.itemGet.GetFromPackUIEvent;
+import com.senne.oneiros.UI.itemGet.GetItemUIEvent;
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUIEvent;
 import com.senne.oneiros.atributes.equipmentSlotAttributes.armor.ArmorAmountTextUIEvent;
 import com.senne.oneiros.commands.CreateItemCmd;
+import com.senne.oneiros.commands.GetItemCmd;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.kyori.adventure.text.Component;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
 
 public final class Oneiros extends JavaPlugin {
@@ -45,19 +42,8 @@ public final class Oneiros extends JavaPlugin {
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            //OneirosCommand.register(commands.getDispatcher());
-            /*commands.register(new LiteralCommandNode<>("cmd", new OneirosCommand(), (Predicate<Object>) o -> true,
-                    new ArgumentCommandNode<>("createitem", StringArgumentType.string(), null, (Predicate<Object>) o -> true, null, null, false,
-                            new SuggestionProvider<Object>() {
-                                @Override
-                                public CompletableFuture<Suggestions> getSuggestions(CommandContext<Object> context, SuggestionsBuilder builder)  {
-                                    builder.suggest("createitem");
-                                    return builder.buildFuture();
-                                }
-                             }), null, true));*/
-            commands.getDispatcher().register(Commands.literal("cmd").then(new LiteralCommandNode<CommandSourceStack>("createitem", new CreateItemCmd(), (Predicate<CommandSourceStack>) o -> true, null, null, true).createBuilder()));
-            //commands.getDispatcher().register(Commands.literal("cmd").then(new LiteralCommandNode<CommandSourceStack>("createitem2", new OneirosCommand(), (Predicate<CommandSourceStack>) o -> true, null, null, true).createBuilder()));
-            //commands.register("createitem", "Open item creation ui.", new CreateCommand());
+            commands.getDispatcher().register(Commands.literal("oneiros").then(new LiteralCommandNode<CommandSourceStack>("create", new CreateItemCmd(), (Predicate<CommandSourceStack>) o -> o.getSender().hasPermission("oneiros.oneiros.create") || o.getSender().isOp(), null, null, true).createBuilder()));
+            commands.getDispatcher().register(Commands.literal("oneiros").then(new LiteralCommandNode<CommandSourceStack>("get", new GetItemCmd(), (Predicate<CommandSourceStack>) o -> o.getSender().hasPermission("oneiros.oneiros.get") || o.getSender().isOp(), null, null, true).createBuilder()));
             commands.register("oneiroscancel", "Cancel the current action.", new CancelCommand());
         });
 
@@ -73,7 +59,10 @@ public final class Oneiros extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EquipmentSlotsUIEvent(), this);
         getServer().getPluginManager().registerEvents(new ArmorAmountTextUIEvent(), this);
         getServer().getPluginManager().registerEvents(new PackSelectUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new PackCreateUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new PackCreateTextUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new GetFromPackUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new GetItemUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new KeyCreateTextUIEvent(), this);
 
         // Registering Attributes
         getServer().sendMessage(Component.text("[Oneiros] Registering attributes ..."));

@@ -1,6 +1,5 @@
-package com.senne.oneiros.UI;
+package com.senne.oneiros.UI.itemCreation;
 
-import com.senne.oneiros.UI.chatUI.ActiveChat;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
 import net.kyori.adventure.text.Component;
@@ -48,7 +47,7 @@ public class CreationUIEvent implements Listener {
 
             player.closeInventory();
 
-            ActiveChat.addActiveChat(player.getUniqueId(), "name");
+            com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat.addActiveChat(player.getUniqueId(), "name");
 
             player.sendMessage(Component.text("Enter the name of the item in the chat.").decoration(TextDecoration.ITALIC, false));
             player.sendMessage(Component.text("This can be done with MiniMessage.").decoration(TextDecoration.ITALIC, false));
@@ -75,7 +74,7 @@ public class CreationUIEvent implements Listener {
 
             player.closeInventory();
 
-            ActiveChat.addActiveChat(player.getUniqueId(), "cmd");
+            com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat.addActiveChat(player.getUniqueId(), "cmd");
 
             player.sendMessage(Component.text("Enter the custom model data of the item in the chat.").decoration(TextDecoration.ITALIC, false));
             player.sendMessage(Component.text("[Cancel]")

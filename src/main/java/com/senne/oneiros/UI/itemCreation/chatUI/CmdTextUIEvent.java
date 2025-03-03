@@ -1,6 +1,6 @@
-package com.senne.oneiros.UI.chatUI;
+package com.senne.oneiros.UI.itemCreation.chatUI;
 
-import com.senne.oneiros.UI.CreationUI;
+import com.senne.oneiros.UI.itemCreation.CreationUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.IntUtils;
 import io.papermc.paper.event.player.ChatEvent;

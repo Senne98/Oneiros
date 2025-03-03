@@ -1,6 +1,5 @@
-package com.senne.oneiros.UI;
+package com.senne.oneiros.UI.itemCreation;
 
-import com.senne.oneiros.UI.chatUI.ActiveChat;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
 import net.kyori.adventure.text.Component;
@@ -52,7 +51,7 @@ public class LoreUIEvent implements Listener {
 
             player.closeInventory();
 
-            ActiveChat.addActiveChat(player.getUniqueId(), "lore");
+            com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat.addActiveChat(player.getUniqueId(), "lore");
 
             player.sendMessage(Component.text("Enter the next line of lore in the chat.").decoration(TextDecoration.ITALIC, false));
             player.sendMessage(Component.text("This can be done with MiniMessage.").decoration(TextDecoration.ITALIC, false));

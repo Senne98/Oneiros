@@ -1,4 +1,4 @@
-package com.senne.oneiros.UI;
+package com.senne.oneiros.UI.itemCreation;
 
 import com.senne.oneiros.item.ActiveItemCreation;
 import net.kyori.adventure.text.Component;

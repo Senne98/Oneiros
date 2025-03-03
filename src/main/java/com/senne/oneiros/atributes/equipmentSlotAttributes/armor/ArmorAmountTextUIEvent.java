@@ -1,6 +1,6 @@
 package com.senne.oneiros.atributes.equipmentSlotAttributes.armor;
 
-import com.senne.oneiros.UI.chatUI.ActiveChat;
+import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.IntUtils;

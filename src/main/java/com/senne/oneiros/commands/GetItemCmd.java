@@ -2,11 +2,11 @@ package com.senne.oneiros.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import com.senne.oneiros.UI.itemCreation.CreationUI;
+import com.senne.oneiros.UI.itemGet.GetFromPackUI;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
 
-public class CreateItemCmd implements Command {
+public class GetItemCmd implements Command {
 
     @Override
     public int run(CommandContext cmd) {
@@ -20,7 +20,7 @@ public class CreateItemCmd implements Command {
 
         Player player = (Player) stack.getSender();
 
-        CreationUI ui = new CreationUI(player);
+        GetFromPackUI ui = new GetFromPackUI(1);
         player.openInventory(ui.getInventory());
 
         return 0;

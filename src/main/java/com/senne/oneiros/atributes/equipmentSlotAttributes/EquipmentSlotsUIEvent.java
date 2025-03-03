@@ -1,7 +1,7 @@
 package com.senne.oneiros.atributes.equipmentSlotAttributes;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.UI.AttributeUI;
+import com.senne.oneiros.UI.itemCreation.AttributeUI;
 import com.senne.oneiros.atributes.Attribute;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.NamespacedKeyDataType;
@@ -9,7 +9,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

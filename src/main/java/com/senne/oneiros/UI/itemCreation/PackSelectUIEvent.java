@@ -1,7 +1,7 @@
-package com.senne.oneiros.UI;
+package com.senne.oneiros.UI.itemCreation;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.UI.chatUI.ActiveChat;
+import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
 import com.senne.oneiros.item.ActiveItemCreation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -16,7 +16,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
 
 public class PackSelectUIEvent implements Listener {
 
@@ -55,7 +54,7 @@ public class PackSelectUIEvent implements Listener {
         if (data.has(new NamespacedKey(Oneiros.getPlugin(), "pack"))) {
             player.closeInventory();
 
-            String pack = data.get(new NamespacedKey(Oneiros.getPlugin(), "key"), PersistentDataType.STRING);
+            String pack = data.get(new NamespacedKey(Oneiros.getPlugin(), "pack"), PersistentDataType.STRING);
             ActiveItemCreation.getActiveItem(player.getUniqueId()).setNamespace(pack);
 
             player.sendMessage(Component.text("Enter the key of the item in the chat.").decoration(TextDecoration.ITALIC, false));
@@ -64,6 +63,8 @@ public class PackSelectUIEvent implements Listener {
                     .decoration(TextDecoration.ITALIC, false)
                     .color(NamedTextColor.RED)
                     .clickEvent(ClickEvent.runCommand("/oneiroscancel key")));
+
+            ActiveChat.addActiveChat(player.getUniqueId(), "key");
 
 
 

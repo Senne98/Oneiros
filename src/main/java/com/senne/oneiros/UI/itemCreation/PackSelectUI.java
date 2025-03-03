@@ -1,13 +1,10 @@
-package com.senne.oneiros.UI;
+package com.senne.oneiros.UI.itemCreation;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.atributes.Attribute;
 import com.senne.oneiros.atributes.AttributeRegister;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
 import com.senne.oneiros.item.ItemRegister;
-import com.senne.oneiros.tools.AttributeUtils;
-import com.senne.oneiros.tools.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
