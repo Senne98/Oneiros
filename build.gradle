@@ -9,6 +9,10 @@ group = 'com.senne'
 version = '0.0.1-ALPHA'
 
 repositories {
+    maven {
+        name = "jitpack"
+        url 'https://jitpack.io'
+    }
     mavenCentral()
     maven {
         name = "papermc-repo"
@@ -22,6 +26,11 @@ repositories {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+
+    //test
+    testImplementation 'com.github.MockBukkit:MockBukkit:v1.21-SNAPSHOT'
+    testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
+    testImplementation(platform("org.junit:junit-bom:5.11.4"))
     //paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
 }
 
@@ -35,6 +44,9 @@ tasks {
         // This is the only required configuration besides applying the plugin.
         // Your plugin's jar (or shadowJar if present) will be used automatically.
         minecraftVersion("1.21.4")
+    }
+    test {
+        useJUnitPlatform()
     }
 }
 
@@ -82,7 +94,7 @@ task configureRun {
             println "Removing world_nether/session.lock"
         }
 
-        filePath = '/home/senne/Documents/onedrive/Documenten/mineraft/Oneiros/Oneiros/run/world_end/session.lock'
+        filePath = '/home/senne/Documents/onedrive/Documenten/mineraft/Oneiros/Oneiros/run/world_the_end/session.lock'
         file = new File(filePath)
         if (file.exists()) {
             file.delete()
