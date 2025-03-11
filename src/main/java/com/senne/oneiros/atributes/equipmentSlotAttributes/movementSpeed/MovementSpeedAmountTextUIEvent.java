@@ -1,14 +1,11 @@
 package com.senne.oneiros.atributes.equipmentSlotAttributes.movementSpeed;
 
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUI;
-import com.senne.oneiros.atributes.equipmentSlotAttributes.flyingSpeed.MovementSpeed;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.DoubleUtils;
-import io.papermc.paper.event.player.ChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 
 public class MovementSpeedAmountTextUIEvent {

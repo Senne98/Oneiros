@@ -27,7 +27,7 @@ public class AttackSpeed extends EquipmentAttribute {
     public ItemStack applyAttribute(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         for (int i = 0; i < getSlots().size(); i++) {
-            meta.addAttributeModifier(Attribute.ARMOR, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "attackspeed_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
+            meta.addAttributeModifier(Attribute.ATTACK_SPEED, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "attackspeed_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
         }
         item.setItemMeta(meta);
         return item;
@@ -35,7 +35,7 @@ public class AttackSpeed extends EquipmentAttribute {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.DIAMOND_CHESTPLATE);
+        return new ItemStack(Material.NETHERITE_SWORD);
     }
 
     @Override

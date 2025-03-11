@@ -35,7 +35,7 @@ public class SubmergedMiningSpeed extends EquipmentAttribute {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.FIRE_CORAL);
+        return new ItemStack(Material.FIRE_CORAL_BLOCK);
     }
 
     @Override

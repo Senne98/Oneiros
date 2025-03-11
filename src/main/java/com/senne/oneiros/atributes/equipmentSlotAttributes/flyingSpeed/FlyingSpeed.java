@@ -35,7 +35,7 @@ public class FlyingSpeed extends EquipmentAttribute {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.DIAMOND_CHESTPLATE);
+        return new ItemStack(Material.FEATHER);
     }
 
     @Override

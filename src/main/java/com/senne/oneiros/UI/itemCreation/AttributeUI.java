@@ -19,6 +19,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -73,10 +74,10 @@ public class AttributeUI implements InventoryHolder {
 
             int slot = 19 + i - start;
 
-            if (i - start > 7) {
+            if (i - start > 6) {
                 slot += 2;
             }
-            if (i - start > 14) {
+            if (i - start > 13) {
                 slot += 2;
             }
 
@@ -91,6 +92,7 @@ public class AttributeUI implements InventoryHolder {
             meta = item.getItemMeta();
             meta.displayName(Component.text("Previous Page").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
             lore = List.of(Component.text("■ Click to go back!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+            meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "page"), PersistentDataType.INTEGER, page - 1);
             meta.lore(lore);
             item.setItemMeta(meta);
             inv.setItem(45, item);
@@ -109,6 +111,7 @@ public class AttributeUI implements InventoryHolder {
             meta = item.getItemMeta();
             meta.displayName(Component.text("Next Page").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
             lore = List.of(Component.text("■ Click to go forward!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+            meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "page"), PersistentDataType.INTEGER, page + 1);
             meta.lore(lore);
             item.setItemMeta(meta);
             inv.setItem(53, item);
