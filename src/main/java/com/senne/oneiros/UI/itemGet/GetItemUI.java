@@ -34,6 +34,7 @@ public class GetItemUI implements InventoryHolder {
 
             meta = neutral.getItemMeta();
             meta.setDisplayName(" ");
+            meta.setHideTooltip(true);
             neutral.setItemMeta(meta);
 
             inv.setItem(i, neutral);

@@ -4,7 +4,7 @@ import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.AttributeUI;
 import com.senne.oneiros.atributes.Attribute;
 import com.senne.oneiros.item.ActiveItemCreation;
-import com.senne.oneiros.tools.NamespacedKeyDataType;
+import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;

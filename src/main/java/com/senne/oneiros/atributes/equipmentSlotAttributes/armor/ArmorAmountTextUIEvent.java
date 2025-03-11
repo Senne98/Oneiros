@@ -1,48 +1,36 @@
 package com.senne.oneiros.atributes.equipmentSlotAttributes.armor;
 
-import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.IntUtils;
-import io.papermc.paper.event.player.ChatEvent;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
-public class ArmorAmountTextUIEvent implements Listener {
+public class ArmorAmountTextUIEvent {
 
-    @EventHandler
-    public void onChat(ChatEvent e) {
+    public static void onChat(Player player, String message) {
 
-        Player player = e.getPlayer();
-
-        if (ActiveChat.getActiveChat(player.getUniqueId()) == null) {
+        if (!IntUtils.isInt(message)) {
+            player.sendMessage(Component.text("Please enter a number!").decoration(TextDecoration.ITALIC, false).color(NamedTextColor.RED));
             return;
         }
 
-
-        if (ActiveChat.getActiveChat(e.getPlayer().getUniqueId()).equals("armor")) {
-            String message = PlainTextComponentSerializer.plainText().serialize(e.message());
-            e.setCancelled(true);
-
-            if (!IntUtils.isInt(message)) {
-                player.sendMessage(Component.text("Please enter a number!").decoration(TextDecoration.ITALIC, false).color(NamedTextColor.RED));
-                return;
-            }
-
-            int amount = Integer.parseInt(message);
-
-            Armor armor = (Armor) ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(Armor.key());
-            armor.setAmount(amount);
-
-
-            EquipmentSlotsUI ui = new EquipmentSlotsUI(player, Armor.key());
-            player.openInventory(ui.getInventory());
+        if (Integer.parseInt(message) < -30 || Integer.parseInt(message) > 30) {
+            player.sendMessage(Component.text("Please enter a number between -30 and 30!").decoration(TextDecoration.ITALIC, false).color(NamedTextColor.RED));
+            return;
         }
+
+        int amount = Integer.parseInt(message);
+
+        Armor armor = (Armor) ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(Armor.key());
+        armor.setAmount(amount);
+
+        EquipmentSlotsUI ui = new EquipmentSlotsUI(player, Armor.key());
+        player.openInventory(ui.getInventory());
     }
 
 }

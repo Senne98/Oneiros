@@ -37,6 +37,7 @@ public class PackSelectUI implements InventoryHolder {
 
             meta = neutral.getItemMeta();
             meta.setDisplayName(" ");
+            meta.setHideTooltip(true);
             neutral.setItemMeta(meta);
 
             inv.setItem(i, neutral);

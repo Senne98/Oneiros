@@ -2,6 +2,7 @@ package com.senne.oneiros.tools;
 
 import com.senne.oneiros.atributes.Attribute;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AttributeUtils {
@@ -15,12 +16,16 @@ public class AttributeUtils {
         return false;
     }
 
-    public static void removeInstance(List<Attribute> attributes, Attribute attribute) {
+    public static void removeEveryInstance(List<Attribute> attributes, Attribute attribute) {
+
+        List<Attribute> toRemove = new ArrayList<>();
+
         for (Attribute a : attributes) {
             if (a.getClass().equals(attribute.getClass())) {
-                attributes.remove(a);
-                return;
+                toRemove.add(a);
             }
         }
+
+        attributes.removeAll(toRemove);
     }
 }

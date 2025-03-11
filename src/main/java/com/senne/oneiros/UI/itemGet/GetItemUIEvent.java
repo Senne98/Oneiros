@@ -2,7 +2,7 @@ package com.senne.oneiros.UI.itemGet;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.item.ItemRegister;
-import com.senne.oneiros.tools.NamespacedKeyDataType;
+import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,7 +23,7 @@ public class GetItemUIEvent implements Listener {
 
         Player player = (Player) e.getWhoClicked();
 
-        if (e.getRawSlot() > 53) {
+        if (e.getRawSlot() > 53 || e.getRawSlot() < 0) {
 
             if (e.getClick().isShiftClick()) {
                 e.setCancelled(true);

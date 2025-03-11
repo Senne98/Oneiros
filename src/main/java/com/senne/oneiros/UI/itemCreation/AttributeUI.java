@@ -6,7 +6,7 @@ import com.senne.oneiros.atributes.AttributeRegister;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
 import com.senne.oneiros.tools.AttributeUtils;
-import com.senne.oneiros.tools.NamespacedKeyDataType;
+import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -16,6 +16,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +39,7 @@ public class AttributeUI implements InventoryHolder {
 
             meta = neutral.getItemMeta();
             meta.setDisplayName(" ");
+            meta.setHideTooltip(true);
             neutral.setItemMeta(meta);
 
             inv.setItem(i, neutral);
@@ -58,6 +60,8 @@ public class AttributeUI implements InventoryHolder {
             item = attributes.get(i).getIcon();
             meta = item.getItemMeta();
             meta.displayName(Component.text(attributes.get(i).getName()).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            meta.addItemFlags(ItemFlag.HIDE_ADDITIONAL_TOOLTIP);
 
             if (AttributeUtils.containsInstance(CustomItem.getAttributes(), attributes.get(i))) {
                 lore = List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));

@@ -1,7 +1,7 @@
 package com.senne.oneiros;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.senne.oneiros.UI.CancelCommand;
+import com.senne.oneiros.commands.CancelCommand;
 import com.senne.oneiros.UI.itemCreation.AttributeUIEvent;
 import com.senne.oneiros.UI.itemCreation.CreationUIEvent;
 import com.senne.oneiros.UI.itemCreation.LoreUIEvent;
@@ -9,8 +9,8 @@ import com.senne.oneiros.UI.itemCreation.PackSelectUIEvent;
 import com.senne.oneiros.UI.itemCreation.chatUI.*;
 import com.senne.oneiros.UI.itemGet.GetFromPackUIEvent;
 import com.senne.oneiros.UI.itemGet.GetItemUIEvent;
+import com.senne.oneiros.atributes.TextUIListener;
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUIEvent;
-import com.senne.oneiros.atributes.equipmentSlotAttributes.armor.ArmorAmountTextUIEvent;
 import com.senne.oneiros.commands.CreateItemCmd;
 import com.senne.oneiros.commands.GetItemCmd;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -22,22 +22,25 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 
-public final class Oneiros extends JavaPlugin {
+public class Oneiros extends JavaPlugin {
 
     static Plugin plugin;
+    Logger logger;
 
     @Override
     public void onEnable() {
 
         // start init
-        getServer().sendMessage(Component.text("[Oneiros] Starting initialization ..."));
+        logger = getServer().getLogger();
+        logger.info("[Oneiros] Starting Oneiros plugin...");
 
         // Plugin startup logic
         plugin = this;
 
         // Registering the commands
-        getServer().sendMessage(Component.text("[Oneiros] Loading commands ..."));
+        logger.info("[Oneiros] Loading commands ...");
 
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
@@ -48,7 +51,7 @@ public final class Oneiros extends JavaPlugin {
         });
 
         // Registering the events
-        getServer().sendMessage(Component.text("[Oneiros] Loading events ..."));
+        logger.info("[Oneiros] Loading events ...");
 
         getServer().getPluginManager().registerEvents(new CreationUIEvent(), this);
         getServer().getPluginManager().registerEvents(new NameTextUIEvent(), this);
@@ -57,19 +60,19 @@ public final class Oneiros extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CmdTextUIEvent(), this);
         getServer().getPluginManager().registerEvents(new AttributeUIEvent(), this);
         getServer().getPluginManager().registerEvents(new EquipmentSlotsUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new ArmorAmountTextUIEvent(), this);
         getServer().getPluginManager().registerEvents(new PackSelectUIEvent(), this);
         getServer().getPluginManager().registerEvents(new PackCreateTextUIEvent(), this);
         getServer().getPluginManager().registerEvents(new GetFromPackUIEvent(), this);
         getServer().getPluginManager().registerEvents(new GetItemUIEvent(), this);
         getServer().getPluginManager().registerEvents(new KeyCreateTextUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new TextUIListener(), this);
 
         // Registering Attributes
-        getServer().sendMessage(Component.text("[Oneiros] Registering attributes ..."));
+        logger.info("[Oneiros] Registering attributes ...");
         Register.registerAttributes();
 
         // end init
-        getServer().sendMessage(Component.text("[Oneiros] Initialization finished"));
+        logger.info("[Oneiros] Initialization finished");
     }
 
 

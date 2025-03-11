@@ -4,7 +4,7 @@ import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.action.ActionHandler;
 import com.senne.oneiros.atributes.Attribute;
 import com.senne.oneiros.tools.AttributeUtils;
-import com.senne.oneiros.tools.NamespacedKeyDataType;
+import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.SerializationUtils;
 import org.bukkit.Material;
@@ -53,6 +53,7 @@ public class Item implements Serializable {
         return item;
     }
 
+    //unit test to be added
     public List<ActionHandler> getActionHandlers() {
         return actionHandlers;
     }
@@ -77,16 +78,12 @@ public class Item implements Serializable {
         return attributes;
     }
 
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
-    }
-
     public void addAttribute(Attribute attribute) {
         attributes.add(attribute);
     }
 
     public void removeAttribute(Attribute attribute) {
-        AttributeUtils.removeInstance(attributes, attribute);
+        AttributeUtils.removeEveryInstance(attributes, attribute);
     }
 
     public Attribute getAttribute(NamespacedKey key) {

@@ -2,7 +2,7 @@ package com.senne.oneiros.atributes.equipmentSlotAttributes;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.item.ActiveItemCreation;
-import com.senne.oneiros.tools.NamespacedKeyDataType;
+import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -35,6 +35,7 @@ public class EquipmentSlotsUI implements InventoryHolder {
 
             meta = neutral.getItemMeta();
             meta.setDisplayName(" ");
+            meta.setHideTooltip(true);
             neutral.setItemMeta(meta);
 
             inv.setItem(i, neutral);
