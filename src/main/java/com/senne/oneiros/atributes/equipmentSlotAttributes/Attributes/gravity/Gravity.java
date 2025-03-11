@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.oxygenBonus;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.gravity;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
@@ -18,16 +18,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class OxygenBonus extends EquipmentAttribute {
+public class Gravity extends EquipmentAttribute {
     private double amount;
 
-    public OxygenBonus() {}
+    public Gravity() {}
 
     @Override
     public ItemStack applyAttribute(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         for (int i = 0; i < getSlots().size(); i++) {
-            meta.addAttributeModifier(Attribute.OXYGEN_BONUS, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "oxygenbonus_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
+            meta.addAttributeModifier(Attribute.GRAVITY, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "gravity_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
         }
         item.setItemMeta(meta);
         return item;
@@ -35,21 +35,21 @@ public class OxygenBonus extends EquipmentAttribute {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.HEART_OF_THE_SEA);
+        return new ItemStack(Material.CHAINMAIL_BOOTS);
     }
 
     @Override
     public String getName() {
-        return "Oxygen Bonus";
+        return "Gravity";
     }
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(Oneiros.getPlugin(), "oxygenbonus");
+        return new NamespacedKey(Oneiros.getPlugin(), "gravity");
     }
 
     public static NamespacedKey key() {
-        return new NamespacedKey(Oneiros.getPlugin(), "oxygenbonus");
+        return new NamespacedKey(Oneiros.getPlugin(), "gravity");
     }
 
     @Override
@@ -82,11 +82,11 @@ public class OxygenBonus extends EquipmentAttribute {
     public void variableConfigUI(Player player) {
         player.closeInventory();
 
-        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_oxygenbonus");
+        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_gravity");
 
-        player.sendMessage(Component.text("Enter the amount of oxygen bonus in the chat.").decoration(TextDecoration.ITALIC, false));
+        player.sendMessage(Component.text("Enter the amount of gravity in the chat.").decoration(TextDecoration.ITALIC, false));
         player.sendMessage(Component.text("[Cancel]")
-                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the oxygen bonus amount input.").color(NamedTextColor.RED)))
+                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the gravity amount input.").color(NamedTextColor.RED)))
                 .decoration(TextDecoration.ITALIC, false)
                 .color(NamedTextColor.RED)
                 .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));

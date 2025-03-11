@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.attackDamage;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.oxygenBonus;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
@@ -18,16 +18,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class AttackDamage extends EquipmentAttribute {
+public class OxygenBonus extends EquipmentAttribute {
     private double amount;
 
-    public AttackDamage() {}
+    public OxygenBonus() {}
 
     @Override
     public ItemStack applyAttribute(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         for (int i = 0; i < getSlots().size(); i++) {
-        meta.addAttributeModifier(Attribute.ATTACK_DAMAGE, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "attackdamage_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
+            meta.addAttributeModifier(Attribute.OXYGEN_BONUS, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "oxygenbonus_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
         }
         item.setItemMeta(meta);
         return item;
@@ -35,21 +35,21 @@ public class AttackDamage extends EquipmentAttribute {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.GOLDEN_SWORD);
+        return new ItemStack(Material.HEART_OF_THE_SEA);
     }
 
     @Override
     public String getName() {
-        return "Attack Damage";
+        return "Oxygen Bonus";
     }
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(Oneiros.getPlugin(), "attackdamage");
+        return new NamespacedKey(Oneiros.getPlugin(), "oxygenbonus");
     }
 
     public static NamespacedKey key() {
-        return new NamespacedKey(Oneiros.getPlugin(), "attackdamage");
+        return new NamespacedKey(Oneiros.getPlugin(), "oxygenbonus");
     }
 
     @Override
@@ -82,11 +82,11 @@ public class AttackDamage extends EquipmentAttribute {
     public void variableConfigUI(Player player) {
         player.closeInventory();
 
-        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_attackdamage");
+        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_oxygenbonus");
 
-        player.sendMessage(Component.text("Enter the amount of attack damage in the chat.").decoration(TextDecoration.ITALIC, false));
+        player.sendMessage(Component.text("Enter the amount of oxygen bonus in the chat.").decoration(TextDecoration.ITALIC, false));
         player.sendMessage(Component.text("[Cancel]")
-                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the attack damage amount input.").color(NamedTextColor.RED)))
+                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the oxygen bonus amount input.").color(NamedTextColor.RED)))
                 .decoration(TextDecoration.ITALIC, false)
                 .color(NamedTextColor.RED)
                 .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));

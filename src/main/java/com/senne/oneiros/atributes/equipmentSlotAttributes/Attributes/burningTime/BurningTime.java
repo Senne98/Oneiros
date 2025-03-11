@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.sweepingDamageRatio;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.burningTime;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
@@ -18,16 +18,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class SweepingDamageRatio extends EquipmentAttribute {
+public class BurningTime extends EquipmentAttribute {
     private double amount;
 
-    public SweepingDamageRatio() {}
+    public BurningTime() {}
 
     @Override
     public ItemStack applyAttribute(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         for (int i = 0; i < getSlots().size(); i++) {
-            meta.addAttributeModifier(Attribute.SWEEPING_DAMAGE_RATIO, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "sweepingdamageratio_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
+            meta.addAttributeModifier(Attribute.BURNING_TIME, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "burningtime_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
         }
         item.setItemMeta(meta);
         return item;
@@ -35,21 +35,21 @@ public class SweepingDamageRatio extends EquipmentAttribute {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.WOODEN_SWORD);
+        return new ItemStack(Material.FIRE_CHARGE);
     }
 
     @Override
     public String getName() {
-        return "Sweeping Damage Ratio";
+        return "Burning Time";
     }
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(Oneiros.getPlugin(), "sweepingdamageratio");
+        return new NamespacedKey(Oneiros.getPlugin(), "burningtime");
     }
 
     public static NamespacedKey key() {
-        return new NamespacedKey(Oneiros.getPlugin(), "sweepingdamageratio");
+        return new NamespacedKey(Oneiros.getPlugin(), "burningtime");
     }
 
     @Override
@@ -82,11 +82,11 @@ public class SweepingDamageRatio extends EquipmentAttribute {
     public void variableConfigUI(Player player) {
         player.closeInventory();
 
-        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_sweepingdamageratio");
+        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_burningtime");
 
-        player.sendMessage(Component.text("Enter the amount of sweeping damage ratio in the chat.").decoration(TextDecoration.ITALIC, false));
+        player.sendMessage(Component.text("Enter the amount of burning time in the chat.").decoration(TextDecoration.ITALIC, false));
         player.sendMessage(Component.text("[Cancel]")
-                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the sweeping damage ratio amount input.").color(NamedTextColor.RED)))
+                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the burning time amount input.").color(NamedTextColor.RED)))
                 .decoration(TextDecoration.ITALIC, false)
                 .color(NamedTextColor.RED)
                 .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));

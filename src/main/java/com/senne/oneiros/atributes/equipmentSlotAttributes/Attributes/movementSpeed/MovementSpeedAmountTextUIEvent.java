@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.movementSpeed;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.movementSpeed;
 
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;

@@ -1,9 +1,9 @@
 package com.senne.oneiros.item;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.atributes.equipmentSlotAttributes.attackDamage.AttackDamage;
+import com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.attackDamage.AttackDamage;
 import com.senne.oneiros.atributes.equipmentSlotAttributes.flyingSpeed.MovementSpeed;
-import com.senne.oneiros.atributes.equipmentSlotAttributes.maxHealth.Health;
+import com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.maxHealth.Health;
 import com.senne.oneiros.mock.MyMockServer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

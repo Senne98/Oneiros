@@ -1,6 +1,8 @@
 package com.senne.oneiros;
 
 import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.senne.oneiros.atributes.booleanAttibutes.BooleanUIEvent;
+import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUIEvent;
 import com.senne.oneiros.commands.CancelCommand;
 import com.senne.oneiros.UI.itemCreation.AttributeUIEvent;
 import com.senne.oneiros.UI.itemCreation.CreationUIEvent;
@@ -10,14 +12,12 @@ import com.senne.oneiros.UI.itemCreation.chatUI.*;
 import com.senne.oneiros.UI.itemGet.GetFromPackUIEvent;
 import com.senne.oneiros.UI.itemGet.GetItemUIEvent;
 import com.senne.oneiros.atributes.TextUIListener;
-import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUIEvent;
 import com.senne.oneiros.commands.CreateItemCmd;
 import com.senne.oneiros.commands.GetItemCmd;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import net.kyori.adventure.text.Component;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -66,6 +66,7 @@ public class Oneiros extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GetItemUIEvent(), this);
         getServer().getPluginManager().registerEvents(new KeyCreateTextUIEvent(), this);
         getServer().getPluginManager().registerEvents(new TextUIListener(), this);
+        getServer().getPluginManager().registerEvents(new BooleanUIEvent(), this);
 
         // Registering Attributes
         logger.info("[Oneiros] Registering attributes ...");

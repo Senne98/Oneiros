@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.gravity;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.scale;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
@@ -18,16 +18,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class Gravity extends EquipmentAttribute {
+public class Scale extends EquipmentAttribute {
     private double amount;
 
-    public Gravity() {}
+    public Scale() {}
 
     @Override
     public ItemStack applyAttribute(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         for (int i = 0; i < getSlots().size(); i++) {
-            meta.addAttributeModifier(Attribute.GRAVITY, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "gravity_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
+            meta.addAttributeModifier(Attribute.SCALE, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "scale_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
         }
         item.setItemMeta(meta);
         return item;
@@ -35,21 +35,21 @@ public class Gravity extends EquipmentAttribute {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.CHAINMAIL_BOOTS);
+        return new ItemStack(Material.TURTLE_SCUTE);
     }
 
     @Override
     public String getName() {
-        return "Gravity";
+        return "Scale";
     }
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(Oneiros.getPlugin(), "gravity");
+        return new NamespacedKey(Oneiros.getPlugin(), "scale");
     }
 
     public static NamespacedKey key() {
-        return new NamespacedKey(Oneiros.getPlugin(), "gravity");
+        return new NamespacedKey(Oneiros.getPlugin(), "scale");
     }
 
     @Override
@@ -82,11 +82,11 @@ public class Gravity extends EquipmentAttribute {
     public void variableConfigUI(Player player) {
         player.closeInventory();
 
-        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_gravity");
+        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_scale");
 
-        player.sendMessage(Component.text("Enter the amount of gravity in the chat.").decoration(TextDecoration.ITALIC, false));
+        player.sendMessage(Component.text("Enter the amount of scale in the chat.").decoration(TextDecoration.ITALIC, false));
         player.sendMessage(Component.text("[Cancel]")
-                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the gravity amount input.").color(NamedTextColor.RED)))
+                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the scale amount input.").color(NamedTextColor.RED)))
                 .decoration(TextDecoration.ITALIC, false)
                 .color(NamedTextColor.RED)
                 .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));

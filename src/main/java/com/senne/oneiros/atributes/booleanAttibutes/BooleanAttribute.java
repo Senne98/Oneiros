@@ -1,17 +1,21 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes;
+package com.senne.oneiros.atributes.booleanAttibutes;
 
 import com.senne.oneiros.atributes.VariableAttribute;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
+public class BooleanAttribute implements VariableAttribute {
 
-public class EquipmentAttribute implements VariableAttribute {
+    boolean bool;
 
-    private List<EquipmentSlot> slots = new ArrayList<>();
+    public boolean isBool() {
+        return bool;
+    }
+
+    public void setBool(boolean bool) {
+        this.bool = bool;
+    }
 
     @Override
     public Byte[] exportVariables() {
@@ -25,6 +29,7 @@ public class EquipmentAttribute implements VariableAttribute {
 
     @Override
     public void variableConfigUI(Player player) {
+
     }
 
     @Override
@@ -45,22 +50,5 @@ public class EquipmentAttribute implements VariableAttribute {
     @Override
     public NamespacedKey getKey() {
         return null;
-    }
-
-    public List<EquipmentSlot> getSlots() {
-        return slots;
-    }
-
-    public void setSlots(List<EquipmentSlot> slots) {
-        this.slots = slots;
-    }
-
-    public void addSlot(EquipmentSlot slot) {
-        if (slots.contains(slot)) return;
-        slots.add(slot);
-    }
-
-    public void removeSlot(EquipmentSlot slot) {
-        slots.remove(slot);
     }
 }

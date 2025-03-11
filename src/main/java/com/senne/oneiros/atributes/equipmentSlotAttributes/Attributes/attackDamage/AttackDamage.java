@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.burningTime;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.attackDamage;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
@@ -18,16 +18,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class BurningTime extends EquipmentAttribute {
+public class AttackDamage extends EquipmentAttribute {
     private double amount;
 
-    public BurningTime() {}
+    public AttackDamage() {}
 
     @Override
     public ItemStack applyAttribute(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         for (int i = 0; i < getSlots().size(); i++) {
-            meta.addAttributeModifier(Attribute.BURNING_TIME, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "burningtime_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
+        meta.addAttributeModifier(Attribute.ATTACK_DAMAGE, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(), "attackdamage_" + getSlots().get(i).name()), amount, AttributeModifier.Operation.ADD_NUMBER, getSlots().get(i).getGroup()));
         }
         item.setItemMeta(meta);
         return item;
@@ -35,21 +35,21 @@ public class BurningTime extends EquipmentAttribute {
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(Material.FIRE_CHARGE);
+        return new ItemStack(Material.GOLDEN_SWORD);
     }
 
     @Override
     public String getName() {
-        return "Burning Time";
+        return "Attack Damage";
     }
 
     @Override
     public NamespacedKey getKey() {
-        return new NamespacedKey(Oneiros.getPlugin(), "burningtime");
+        return new NamespacedKey(Oneiros.getPlugin(), "attackdamage");
     }
 
     public static NamespacedKey key() {
-        return new NamespacedKey(Oneiros.getPlugin(), "burningtime");
+        return new NamespacedKey(Oneiros.getPlugin(), "attackdamage");
     }
 
     @Override
@@ -82,11 +82,11 @@ public class BurningTime extends EquipmentAttribute {
     public void variableConfigUI(Player player) {
         player.closeInventory();
 
-        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_burningtime");
+        ActiveChat.addActiveChat(player.getUniqueId(), "defaultattribute_attackdamage");
 
-        player.sendMessage(Component.text("Enter the amount of burning time in the chat.").decoration(TextDecoration.ITALIC, false));
+        player.sendMessage(Component.text("Enter the amount of attack damage in the chat.").decoration(TextDecoration.ITALIC, false));
         player.sendMessage(Component.text("[Cancel]")
-                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the burning time amount input.").color(NamedTextColor.RED)))
+                .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the attack damage amount input.").color(NamedTextColor.RED)))
                 .decoration(TextDecoration.ITALIC, false)
                 .color(NamedTextColor.RED)
                 .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));
