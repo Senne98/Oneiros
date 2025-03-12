@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.submergedMiningSpeed;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.submergedMiningSpeed;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;

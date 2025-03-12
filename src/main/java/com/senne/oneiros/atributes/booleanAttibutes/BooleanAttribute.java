@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class BooleanAttribute implements VariableAttribute {
 
-    boolean bool;
+    private boolean bool;
 
     public boolean isBool() {
         return bool;

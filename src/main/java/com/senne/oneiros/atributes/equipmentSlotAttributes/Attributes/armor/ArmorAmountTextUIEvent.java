@@ -1,13 +1,11 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.armor;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.armor;
 
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.IntUtils;
-import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 
 public class ArmorAmountTextUIEvent {

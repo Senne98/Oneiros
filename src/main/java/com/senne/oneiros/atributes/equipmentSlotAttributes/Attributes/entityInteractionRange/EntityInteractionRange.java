@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.entityInteractionRange;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.entityInteractionRange;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;

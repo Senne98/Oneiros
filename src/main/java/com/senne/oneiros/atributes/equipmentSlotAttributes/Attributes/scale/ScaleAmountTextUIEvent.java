@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.scale;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.scale;
 
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;

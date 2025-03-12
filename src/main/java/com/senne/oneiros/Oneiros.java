@@ -17,6 +17,7 @@ import com.senne.oneiros.commands.GetItemCmd;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.handler.configuration.LifecycleEventHandlerConfiguration;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -43,6 +44,7 @@ public class Oneiros extends JavaPlugin {
         logger.info("[Oneiros] Loading commands ...");
 
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
+        manager.registerEventHandler();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.getDispatcher().register(Commands.literal("oneiros").then(new LiteralCommandNode<CommandSourceStack>("create", new CreateItemCmd(), (Predicate<CommandSourceStack>) o -> o.getSender().hasPermission("oneiros.oneiros.create") || o.getSender().isOp(), null, null, true).createBuilder()));

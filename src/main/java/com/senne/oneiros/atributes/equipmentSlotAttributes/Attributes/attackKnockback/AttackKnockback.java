@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.attackKnockback;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.attackKnockback;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;

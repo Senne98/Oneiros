@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.oxygenBonus;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.oxygenBonus;
 
 import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;

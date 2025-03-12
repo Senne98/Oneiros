@@ -1,10 +1,10 @@
 package com.senne.oneiros.tools;
 
 import com.senne.oneiros.atributes.Attribute;
-import com.senne.oneiros.atributes.equipmentSlotAttributes.attackDamage.AttackDamage;
+import com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.attackDamage.AttackDamage;
+import com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.maxHealth.Health;
 import com.senne.oneiros.atributes.equipmentSlotAttributes.attackSpeed.AttackSpeed;
 import com.senne.oneiros.atributes.equipmentSlotAttributes.knockbackResistance.KnockbackResistance;
-import com.senne.oneiros.atributes.equipmentSlotAttributes.maxHealth.Health;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

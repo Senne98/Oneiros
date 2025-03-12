@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.waterMovementEfficiency;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.waterMovementEfficiency;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;

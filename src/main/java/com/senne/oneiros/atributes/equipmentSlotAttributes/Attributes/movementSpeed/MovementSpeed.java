@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.movementSpeed;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.movementSpeed;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;

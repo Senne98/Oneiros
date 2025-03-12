@@ -1,4 +1,4 @@
-package com.senne.oneiros.atributes.equipmentSlotAttributes.maxHealth;
+package com.senne.oneiros.atributes.equipmentSlotAttributes.Attributes.maxHealth;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
