@@ -19,7 +19,7 @@ import org.mockbukkit.mockbukkit.MockBukkit;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestItem {
 
@@ -63,18 +63,18 @@ public class TestItem {
 
         item.addAttribute(health);
         item.addAttribute(attackDamage);
-        Assertions.assertEquals(2, item.getAttributes().size());
-        Assertions.assertTrue(item.getAttributes().contains(health));
-        Assertions.assertTrue(item.getAttributes().contains(attackDamage));
-        Assertions.assertEquals(health, item.getAttribute(health.getKey()));
-        Assertions.assertEquals(attackDamage, item.getAttribute(attackDamage.getKey()));
+        assertEquals(2, item.getAttributes().size());
+        assertTrue(item.getAttributes().contains(health));
+        assertTrue(item.getAttributes().contains(attackDamage));
+        assertEquals(health, item.getAttribute(health.getKey()));
+        assertEquals(attackDamage, item.getAttribute(attackDamage.getKey()));
 
         item.removeAttribute(health);
-        Assertions.assertEquals(1, item.getAttributes().size());
-        Assertions.assertFalse(item.getAttributes().contains(health));
-        Assertions.assertTrue(item.getAttributes().contains(attackDamage));
-        Assertions.assertNull(item.getAttribute(health.getKey()));
-        Assertions.assertNotNull(item.getAttribute(attackDamage.getKey()));
+        assertEquals(1, item.getAttributes().size());
+        assertFalse(item.getAttributes().contains(health));
+        assertTrue(item.getAttributes().contains(attackDamage));
+        assertNull(item.getAttribute(health.getKey()));
+        assertNotNull(item.getAttribute(attackDamage.getKey()));
     }
 
     @Test
@@ -83,18 +83,18 @@ public class TestItem {
         lore.add(Component.text("Test1").color(NamedTextColor.GOLD));
         lore.add(Component.text("Test2").color(NamedTextColor.GOLD));
         item.setLore(lore);
-        Assertions.assertEquals(2, item.getLore().size());
-        Assertions.assertTrue(item.getLore().contains(lore.get(0)));
-        Assertions.assertTrue(item.getLore().contains(lore.get(1)));
+        assertEquals(2, item.getLore().size());
+        assertTrue(item.getLore().contains(lore.get(0)));
+        assertTrue(item.getLore().contains(lore.get(1)));
     }
 
     @Test
     public void testSetNamespacedKey() {
         item.setKey("key");
         item.setNamespace("test");
-        Assertions.assertEquals("test", item.getNamespacedKey().getNamespace());
-        Assertions.assertEquals("key", item.getNamespacedKey().getKey());
-        Assertions.assertEquals(new NamespacedKey("test", "key"), item.getNamespacedKey());
+        assertEquals("test", item.getNamespacedKey().getNamespace());
+        assertEquals("key", item.getNamespacedKey().getKey());
+        assertEquals(new NamespacedKey("test", "key"), item.getNamespacedKey());
     }
 
     @Test
@@ -107,13 +107,13 @@ public class TestItem {
         item.setNamespace("test");
 
         byte[] serialized = SerializationUtils.serialize(item);
-        Assertions.assertEquals(item.getMaterial(), ((Item) SerializationUtils.deserialize(serialized)).getMaterial());
-        Assertions.assertEquals(item.getCmd(), ((Item) SerializationUtils.deserialize(serialized)).getCmd());
-        Assertions.assertEquals(item.getDisplayName(), ((Item) SerializationUtils.deserialize(serialized)).getDisplayName());
-        Assertions.assertEquals(item.getLore(), ((Item) SerializationUtils.deserialize(serialized)).getLore());
-        Assertions.assertEquals(item.getAttributes().get(0).getKey(), ((Item) SerializationUtils.deserialize(serialized)).getAttributes().get(0).getKey());
-        Assertions.assertEquals(item.getActionHandlers(), ((Item) SerializationUtils.deserialize(serialized)).getActionHandlers());
-        Assertions.assertEquals(item.getNamespacedKey(), ((Item) SerializationUtils.deserialize(serialized)).getNamespacedKey());
+        assertEquals(item.getMaterial(), ((Item) SerializationUtils.deserialize(serialized)).getMaterial());
+        assertEquals(item.getCmd(), ((Item) SerializationUtils.deserialize(serialized)).getCmd());
+        assertEquals(item.getDisplayName(), ((Item) SerializationUtils.deserialize(serialized)).getDisplayName());
+        assertEquals(item.getLore(), ((Item) SerializationUtils.deserialize(serialized)).getLore());
+        assertEquals(item.getAttributes().get(0).getKey(), ((Item) SerializationUtils.deserialize(serialized)).getAttributes().get(0).getKey());
+        assertEquals(item.getActionHandlers(), ((Item) SerializationUtils.deserialize(serialized)).getActionHandlers());
+        assertEquals(item.getNamespacedKey(), ((Item) SerializationUtils.deserialize(serialized)).getNamespacedKey());
     }
 
 }

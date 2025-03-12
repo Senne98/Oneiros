@@ -23,6 +23,6 @@ public class CreateItemCmd implements Command {
         CreationUI ui = new CreationUI(player);
         player.openInventory(ui.getInventory());
 
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 }

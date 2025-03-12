@@ -31,6 +31,8 @@ dependencies {
     testImplementation 'com.github.MockBukkit:MockBukkit:v1.21-SNAPSHOT'
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     testImplementation(platform("org.junit:junit-bom:5.11.4"))
+    //testImplementation 'org.eclipse.jdt:ecj:4.6.1'
+
     //paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
 }
 
@@ -53,6 +55,7 @@ tasks {
         useJUnitPlatform()
     }
 }
+
 
 def targetJavaVersion = 21
 java {

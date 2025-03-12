@@ -23,6 +23,6 @@ public class GetItemCmd implements Command {
         GetFromPackUI ui = new GetFromPackUI(1);
         player.openInventory(ui.getInventory());
 
-        return 0;
+        return Command.SINGLE_SUCCESS;
     }
 }
