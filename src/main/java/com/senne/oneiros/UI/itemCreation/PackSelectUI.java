@@ -1,7 +1,7 @@
 package com.senne.oneiros.UI.itemCreation;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.atributes.AttributeRegister;
+import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
 import com.senne.oneiros.item.ItemRegister;

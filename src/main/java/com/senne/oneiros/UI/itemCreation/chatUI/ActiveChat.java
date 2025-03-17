@@ -5,6 +5,9 @@ import java.util.UUID;
 
 public class ActiveChat {
 
+    // Stores the active chat for each player
+    // Layout: ID (+ data)
+
     private static HashMap<UUID, String> activeChats = new HashMap<>();
 
     public static void addActiveChat(UUID uuid, String key) {

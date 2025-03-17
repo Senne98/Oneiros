@@ -1,8 +1,8 @@
 package com.senne.oneiros;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.senne.oneiros.atributes.booleanAttibutes.BooleanUIEvent;
-import com.senne.oneiros.atributes.equipmentSlotAttributes.EquipmentSlotsUIEvent;
+import com.senne.oneiros.atributes.attributeTypes.events.BooleanUIEvent;
+import com.senne.oneiros.atributes.attributeTypes.events.EquipmentSlotsUIEvent;
 import com.senne.oneiros.commands.CancelCommand;
 import com.senne.oneiros.UI.itemCreation.AttributeUIEvent;
 import com.senne.oneiros.UI.itemCreation.CreationUIEvent;
@@ -11,7 +11,7 @@ import com.senne.oneiros.UI.itemCreation.PackSelectUIEvent;
 import com.senne.oneiros.UI.itemCreation.chatUI.*;
 import com.senne.oneiros.UI.itemGet.GetFromPackUIEvent;
 import com.senne.oneiros.UI.itemGet.GetItemUIEvent;
-import com.senne.oneiros.atributes.TextUIListener;
+import com.senne.oneiros.atributes.attributeTypes.events.TextUIListener;
 import com.senne.oneiros.commands.CreateItemCmd;
 import com.senne.oneiros.commands.GetItemCmd;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -39,6 +39,7 @@ public class Oneiros extends JavaPlugin {
         // Check if the plugin is running in a test environment
         try {
             Class.forName("org.mockbukkit.mockbukkit.MockBukkit");
+            logger.info("[Oneiros] Running in test environment");
             mocked = true;
         } catch (ClassNotFoundException e) {
             mocked = false;
@@ -81,8 +82,8 @@ public class Oneiros extends JavaPlugin {
             final Commands commands = event.registrar();
 
             LiteralArgumentBuilder<CommandSourceStack> oneiros = Commands.literal("oneiros");
-            oneiros.then(Commands.literal("create")).requires(source -> source.getSender().hasPermission("oneiros.oneiros.create") || source.getSender().isOp()).executes(new CreateItemCmd());
-            oneiros.then(Commands.literal("get")).requires(source -> source.getSender().hasPermission("oneiros.oneiros.get") || source.getSender().isOp()).executes(new GetItemCmd());
+            oneiros.then(Commands.literal("create").requires(source -> source.getSender().hasPermission("oneiros.oneiros.create") || source.getSender().isOp()).executes(new CreateItemCmd()));
+            oneiros.then(Commands.literal("get").requires(source -> source.getSender().hasPermission("oneiros.oneiros.get") || source.getSender().isOp()).executes(new GetItemCmd()));
 
             commands.getDispatcher().register(oneiros);
 

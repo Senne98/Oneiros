@@ -1,17 +1,16 @@
 package com.senne.oneiros.UI.itemCreation;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.atributes.Attribute;
-import com.senne.oneiros.atributes.AttributeRegister;
-import com.senne.oneiros.atributes.VariableAttribute;
+import com.senne.oneiros.atributes.attributeTypes.Attribute;
+import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
+import com.senne.oneiros.atributes.attributeTypes.VariableAttribute;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
-import com.senne.oneiros.tools.AttributeUtils;
+import com.senne.oneiros.tools.utils.AttributeUtils;
 import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

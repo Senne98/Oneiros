@@ -3,7 +3,7 @@ package com.senne.oneiros.UI.itemCreation.chatUI;
 import com.senne.oneiros.UI.itemCreation.PackSelectUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.ItemRegister;
-import com.senne.oneiros.tools.StringUtils;
+import com.senne.oneiros.tools.utils.StringUtils;
 import io.papermc.paper.event.player.ChatEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
