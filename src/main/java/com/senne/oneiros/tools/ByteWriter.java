@@ -20,6 +20,11 @@ public class ByteWriter implements Collection<Byte> {
         addAll(collection);
     }
 
+    public ByteWriter(byte[] collection) {
+        elementData = new Byte[DEFAULT_CAPACITY];
+        addAll(collection);
+    }
+
     @Override
     public int size() {
         return size;
@@ -58,7 +63,15 @@ public class ByteWriter implements Collection<Byte> {
 
     @Override
     public @NotNull Object[] toArray() {
-        return new Object[0];
+        return Arrays.copyOf(elementData, size);
+    }
+
+    public byte[] toByteArray() {
+        byte[] bytes = new byte[size];
+        for (int i = 0; i < size; i++) {
+            bytes[i] = elementData[i];
+        }
+        return bytes;
     }
 
     @Override
@@ -149,8 +162,19 @@ public class ByteWriter implements Collection<Byte> {
         return true;
     }
 
-    public Byte[] getFirst(int amount) {
-        return Arrays.copyOf(elementData, amount);
+    public byte[] getFirst(int amount) {
+        Byte[] bytes = Arrays.copyOf(elementData, amount);
+        byte[] result = new byte[amount];
+        for (int i = 0; i < amount; i++) {
+            result[i] = bytes[i];
+        }
+
+        for (int i = 0; i < size - amount; i++) {
+            elementData[i] = elementData[i + amount];
+        }
+        size -= amount;
+
+        return result;
     }
 
     @Override

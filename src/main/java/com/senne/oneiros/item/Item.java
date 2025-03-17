@@ -2,21 +2,19 @@ package com.senne.oneiros.item;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.action.ActionHandler;
-import com.senne.oneiros.atributes.Attribute;
-import com.senne.oneiros.tools.AttributeUtils;
+import com.senne.oneiros.atributes.attributeTypes.Attribute;
+import com.senne.oneiros.tools.utils.AttributeUtils;
 import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
-import org.apache.commons.lang3.SerializationUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Item implements Serializable {
+public class Item {
 
     private int cmd;
     private Material material;
@@ -139,11 +137,7 @@ public class Item implements Serializable {
         this.namespace = namespace;
     }
 
-    public byte[] serialize() {
-        return SerializationUtils.serialize(this);
-    }
-
     public static Item deserialize(byte[] data) {
-        return SerializationUtils.deserialize(data);
+        return null;
     }
 }

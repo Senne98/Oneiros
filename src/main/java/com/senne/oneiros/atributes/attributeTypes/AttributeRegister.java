@@ -29,4 +29,8 @@ public class AttributeRegister {
         }
         return null;
     }
+
+    public static boolean contains(NamespacedKey key) {
+        return attributes.stream().anyMatch(attribute -> attribute.getKey().equals(key));
+    }
 }

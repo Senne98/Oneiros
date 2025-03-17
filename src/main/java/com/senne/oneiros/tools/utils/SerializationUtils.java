@@ -1,6 +1,8 @@
 package com.senne.oneiros.tools.utils;
 
+import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.atributes.attributeTypes.Attribute;
+import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
 import com.senne.oneiros.atributes.attributeTypes.VariableAttribute;
 import com.senne.oneiros.item.Item;
 import com.senne.oneiros.tools.ByteWriter;
@@ -25,6 +27,8 @@ public class SerializationUtils {
                 return clazz.cast(deserializeComponent(bytes));
             case "NamespacedKey":
                 return clazz.cast(deserializeNamespacedKey(bytes));
+            case "Attribute":
+                return clazz.cast(deserializeAttribute(bytes));
             default:
                 throw new IllegalArgumentException("Unsupported type: " + clazz.getName());
         }
@@ -78,7 +82,6 @@ public class SerializationUtils {
         return serializer.deserialize(new String(bytes, StandardCharsets.UTF_8));
     }
 
-    //first bytes: length of attribute
     //second byte: attribute type: 0 for VariableAttribute, 1 for Attribute
     //third bytes: length of key
     //fourth bytes: key
@@ -111,6 +114,28 @@ public class SerializationUtils {
         attributeWriter.addAll(attributeBytes);
 
         return attributeWriter.toByteArray();
+    }
+
+    private static Attribute deserializeAttribute(byte[] bytes) {
+        byte[] processing;
+        ByteWriter writer = new ByteWriter(bytes);
+        processing = writer.getFirst(1);
+        byte type = processing[0];
+        processing = writer.getFirst(deserializeInt(writer.getFirst(4)));
+        NamespacedKey key = deserializeNamespacedKey(processing);
+        if (!AttributeRegister.contains(key)) Oneiros.getPlugin().getLogger().warning("Unknown attribute key: " + key);
+
+        Attribute attribute = AttributeRegister.getAttribute(key);
+
+        if (type == 1) {
+            return attribute;
+        }
+
+        VariableAttribute varAttribute = (VariableAttribute) attribute;
+        processing = writer.getFirst(deserializeInt(writer.getFirst(4)));
+        varAttribute.importVariables(processing);
+
+        return varAttribute;
     }
 
     public static byte[] serialize(NamespacedKey key) {

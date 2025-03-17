@@ -1,6 +1,6 @@
-package com.senne.oneiros.tools;
+package com.senne.oneiros.tools.utils;
 
-import com.senne.oneiros.atributes.Attribute;
+import com.senne.oneiros.atributes.attributeTypes.Attribute;
 
 import java.util.ArrayList;
 import java.util.List;
