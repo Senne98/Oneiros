@@ -14,7 +14,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
     permissions:
@@ -27,13 +27,15 @@ jobs:
       with:
         java-version: '21'
         distribution: 'adopt'
+    - name: Change wrapper permissions
+      run: chmod +x ./gradlew
 
     # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
     # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-    - name: Build with Gradle Wrapper
+    - name: Test with Gradle Wrapper
       run: ./gradlew test
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
