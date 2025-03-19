@@ -5,13 +5,17 @@ import com.senne.oneiros.atributes.attributeTypes.Attribute;
 import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
 import com.senne.oneiros.atributes.attributeTypes.VariableAttribute;
 import com.senne.oneiros.item.Item;
-import com.senne.oneiros.tools.ByteWriter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SerializationUtils {
 
@@ -29,6 +33,8 @@ public class SerializationUtils {
                 return clazz.cast(deserializeNamespacedKey(bytes));
             case "Attribute":
                 return clazz.cast(deserializeAttribute(bytes));
+            case "Item":
+                return clazz.cast(deserializeItem(bytes));
             default:
                 throw new IllegalArgumentException("Unsupported type: " + clazz.getName());
         }
@@ -82,57 +88,73 @@ public class SerializationUtils {
         return serializer.deserialize(new String(bytes, StandardCharsets.UTF_8));
     }
 
-    //second byte: attribute type: 0 for VariableAttribute, 1 for Attribute
+    //second byte: attribute type: 1 for VariableAttribute, 0 for Attribute
     //third bytes: length of key
     //fourth bytes: key
     //ONLY FOR VARIABLE ATTRIBUTE
     //fifth bytes: length of attribute
     //sixth bytes: attribute
     public static byte[] serialize(Attribute attribute) {
-        ByteWriter attributeWriter = new ByteWriter();
+        byte[] result = new byte[1];
 
-        if (!(attribute instanceof VariableAttribute)) {
-            attributeWriter.add((byte) 1);
+        if (attribute instanceof VariableAttribute) {
+            result[0] = 1;
 
             byte[] attributeBytes = serialize(attribute.getKey());
-            attributeWriter.addAll(serialize(attributeBytes.length));
-            attributeWriter.addAll(attributeBytes);
+            result = ByteUtils.merge(result, serialize(attributeBytes.length));
+            result = ByteUtils.merge(result, attributeBytes);
 
             byte[] attributeProperties = ((VariableAttribute) attribute).exportVariables();
 
-            attributeWriter.addAll(serialize(attributeProperties.length));
-            attributeWriter.addAll(attributeProperties);
+            result = ByteUtils.merge(result, serialize(attributeProperties.length));
+            result = ByteUtils.merge(result, attributeProperties);
 
-            return attributeWriter.toByteArray();
+            return result;
 
         }
 
-        attributeWriter.add((byte) 0);
+        result[0] = 0;
 
         byte[] attributeBytes = serialize(attribute.getKey());
-        attributeWriter.addAll(serialize(attributeBytes.length));
-        attributeWriter.addAll(attributeBytes);
+        result = ByteUtils.merge(result, serialize(attributeBytes.length));
+        result = ByteUtils.merge(result, attributeBytes);
 
-        return attributeWriter.toByteArray();
+        return result;
     }
 
     private static Attribute deserializeAttribute(byte[] bytes) {
         byte[] processing;
-        ByteWriter writer = new ByteWriter(bytes);
-        processing = writer.getFirst(1);
-        byte type = processing[0];
-        processing = writer.getFirst(deserializeInt(writer.getFirst(4)));
+        ByteBuffer buffer = ByteBuffer.wrap(bytes);
+
+        //type
+        byte type = buffer.get();
+
+        //namespacedKey
+        processing = new byte[4];
+        buffer.get(processing);
+        int length = deserializeInt(processing);
+        processing = new byte[length];
+        buffer.get(processing);
         NamespacedKey key = deserializeNamespacedKey(processing);
-        if (!AttributeRegister.contains(key)) Oneiros.getPlugin().getLogger().warning("Unknown attribute key: " + key);
+
+        if (!AttributeRegister.contains(key)) {
+            Oneiros.getPlugin().getLogger().warning("Unknown attribute key: " + key);
+            return null;
+        }
 
         Attribute attribute = AttributeRegister.getAttribute(key);
 
-        if (type == 1) {
+        if (type == 0) {
             return attribute;
         }
 
+        //variable attribute
+        processing = new byte[4];
+        buffer.get(processing);
+        length = deserializeInt(processing);
+        processing = new byte[length];
         VariableAttribute varAttribute = (VariableAttribute) attribute;
-        processing = writer.getFirst(deserializeInt(writer.getFirst(4)));
+        buffer.get(processing);
         varAttribute.importVariables(processing);
 
         return varAttribute;
@@ -147,54 +169,124 @@ public class SerializationUtils {
     }
 
     public static byte[] serialize(Item item) {
-        ByteWriter writer = new ByteWriter();
+        byte[] result = new byte[0];
 
         //cmd
-        writer.addAll(serialize(item.getCmd()));
+        result = ByteUtils.merge(result, serialize(item.getCmd()));
 
         //material
         byte[] materialBytes = serialize(item.getMaterial());
-        writer.addAll(serialize(materialBytes.length));
-        writer.addAll(materialBytes);
+        result = ByteUtils.merge(result, serialize(materialBytes.length));
+        result = ByteUtils.merge(result, materialBytes);
 
         //displayName
         byte[] displayNameBytes = serialize(item.getDisplayName());
-        writer.addAll(serialize(displayNameBytes.length));
-        writer.addAll(displayNameBytes);
+        result = ByteUtils.merge(result, serialize(displayNameBytes.length));
+        result = ByteUtils.merge(result, displayNameBytes);
 
         //lore
-        ByteWriter loreWriter = new ByteWriter();
-        for (Component lore : item.getLore()) {
-            byte[] loreBytes = serialize(lore);
-            loreWriter.addAll(serialize(loreBytes.length));
-            loreWriter.addAll(loreBytes);
+        byte[] loreBytes = new byte[0];
+        for (Component line : item.getLore()) {
+            byte[] lineBytes = serialize(line);
+            loreBytes = ByteUtils.merge(loreBytes, serialize(lineBytes.length));
+            loreBytes = ByteUtils.merge(loreBytes, lineBytes);
         }
-        byte[] loreBytes = loreWriter.toByteArray();
-        writer.addAll(serialize(loreBytes.length));
-        writer.addAll(loreBytes);
+        result = ByteUtils.merge(result, serialize(loreBytes.length));
+        result = ByteUtils.merge(result, loreBytes);
 
         //attributes
-        ByteWriter attributeListWriter = new ByteWriter();
-
-        byte[] attributeBytes;
-
+        byte[] attributeListBytes = new byte[0];
         for (Attribute attribute : item.getAttributes()) {
-            attributeBytes = serialize(attribute);
-            attributeListWriter.addAll(serialize(attributeBytes.length));
-            attributeListWriter.addAll(attributeBytes);
+            byte[] attributeBytes = serialize(attribute);
+            attributeListBytes = ByteUtils.merge(attributeListBytes, serialize(attributeBytes.length));
+            attributeListBytes = ByteUtils.merge(attributeListBytes, attributeBytes);
         }
-
-        byte[] attributeListBytes = attributeListWriter.toByteArray();
-        writer.addAll(serialize(attributeListBytes.length));
-        writer.addAll(attributeListBytes);
+        result = ByteUtils.merge(result, serialize(attributeListBytes.length));
+        result = ByteUtils.merge(result, attributeListBytes);
 
         //actionHandlers: TO DO
 
         //namespacedKey
         byte[] namespaceBytes = serialize(item.getNamespacedKey());
-        writer.addAll(serialize(namespaceBytes.length));
-        writer.addAll(namespaceBytes);
+        result = ByteUtils.merge(result, serialize(namespaceBytes.length));
+        result = ByteUtils.merge(result, namespaceBytes);
 
-        return writer.toByteArray();
+        return result;
+    }
+
+    public static Item deserializeItem(byte[] bytes) {
+        ByteBuffer buffer = ByteBuffer.wrap(bytes);
+        byte[] processing;
+
+        //cmd
+        processing = new byte[4];
+        buffer.get(processing);
+        int cmd = deserializeInt(processing);
+
+        //material
+        processing = new byte[4];
+        buffer.get(processing);
+        int amount = deserializeInt(processing);
+        processing = new byte[amount];
+        buffer.get(processing);
+        Item item = new Item(deserializeMaterial(processing));
+
+        item.setCmd(cmd);
+
+        //displayName
+        processing = new byte[4];
+        buffer.get(processing);
+        amount = deserializeInt(processing);
+        processing = new byte[amount];
+        buffer.get(processing);
+        item.setDisplayName(deserializeComponent(processing));
+
+        //lore
+        processing = new byte[4];
+        buffer.get(processing);
+        amount = deserializeInt(processing);
+        processing = new byte[amount];
+        buffer.get(processing);
+        ByteBuffer loreBuffer = ByteBuffer.wrap(processing);
+
+        List<Component> lore = new ArrayList<>();
+        while (loreBuffer.remaining() > 0) {
+            processing = new byte[4];
+            loreBuffer.get(processing);
+            amount = deserializeInt(processing);
+            processing = new byte[amount];
+            loreBuffer.get(processing);
+            lore.add(deserializeComponent(processing));
+        }
+        item.setLore(lore);
+
+        //attributes
+        processing = new byte[4];
+        buffer.get(processing);
+        amount = deserializeInt(processing);
+        processing = new byte[amount];
+        buffer.get(processing);
+        ByteBuffer attributeBuffer = ByteBuffer.wrap(processing);
+
+        while (attributeBuffer.remaining() > 0) {
+            processing = new byte[4];
+            attributeBuffer.get(processing);
+            amount = deserializeInt(processing);
+            processing = new byte[amount];
+            attributeBuffer.get(processing);
+            item.addAttribute(deserializeAttribute(processing));
+        }
+
+        //actionHandlers: TO DO
+
+        //namespacedKey
+        processing = new byte[4];
+        buffer.get(processing);
+        amount = deserializeInt(processing);
+        processing = new byte[amount];
+        buffer.get(processing);
+        item.setNamespacedKey(deserializeNamespacedKey(processing));
+
+        return item;
     }
 }

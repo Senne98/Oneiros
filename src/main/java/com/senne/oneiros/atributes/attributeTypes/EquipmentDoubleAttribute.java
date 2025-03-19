@@ -85,4 +85,13 @@ public abstract class EquipmentDoubleAttribute extends EquipmentAttribute {
     public double getMax() {
         return max;
     }
+
+    @Override
+    public boolean equals(Object j) {
+        if (!(j instanceof EquipmentDoubleAttribute)) return false;
+        EquipmentDoubleAttribute attribute = (EquipmentDoubleAttribute) j;
+        if (amount != attribute.amount) return false;
+
+        return super.equals(j);
+    }
 }

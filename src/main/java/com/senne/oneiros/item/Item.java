@@ -114,11 +114,20 @@ public class Item {
     }
 
     public void setLore(List<Component> lore) {
+        if (lore == null) {
+            this.lore = new ArrayList<>();
+            return;
+        }
         this.lore = lore;
     }
 
     public NamespacedKey getNamespacedKey() {
         return new NamespacedKey(namespace, key);
+    }
+
+    public void setNamespacedKey(NamespacedKey key) {
+        this.namespace = key.getNamespace();
+        this.key = key.getKey();
     }
 
     public String getKey() {
@@ -139,5 +148,22 @@ public class Item {
 
     public static Item deserialize(byte[] data) {
         return null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (cmd != item.cmd) return false;
+        if (material != item.material) return false;
+        if ((displayName == null && item.displayName == null) || !displayName.equals(item.displayName)) return false;
+        if (!lore.equals(item.lore)) return false;
+        if (!attributes.equals(item.attributes)) return false;
+        if (!actionHandlers.equals(item.actionHandlers)) return false;
+        if ((namespace == null && item.namespace == null) || !namespace.equals(item.namespace)) return false;
+        return (key == null && item.key == null) || key.equals(item.key);
     }
 }

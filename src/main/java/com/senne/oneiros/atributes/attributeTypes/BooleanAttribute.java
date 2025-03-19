@@ -25,7 +25,7 @@ public abstract class BooleanAttribute implements VariableAttribute {
     @Override
     public byte[] exportVariables() {
         byte[] bytes = new byte[1];
-        bytes[0] = (byte) (isBool() ? 1 : 0);
+        bytes[0] = (byte) (bool ? 1 : 0);
         return bytes;
     }
 
@@ -36,7 +36,7 @@ public abstract class BooleanAttribute implements VariableAttribute {
 
     @Override
     public void variableConfigUI(Player player) {
-        BooleanUI ui = new BooleanUI(player, getKey());
+        BooleanUI ui = new BooleanUI(player, namespacedKey);
         player.closeInventory();
         player.openInventory(ui.getInventory());
     }
@@ -54,5 +54,16 @@ public abstract class BooleanAttribute implements VariableAttribute {
     @Override
     public ItemStack getIcon() {
         return icon;
+    }
+
+    @Override
+    public boolean equals(Object j) {
+        if (!(j instanceof BooleanAttribute)) return false;
+        BooleanAttribute attribute = (BooleanAttribute) j;
+        if (!attribute.getKey().equals(namespacedKey)) return false;
+        if (!attribute.getIcon().equals(icon)) return false;
+        if (!attribute.getName().equals(name)) return false;
+
+        return bool == attribute.isBool();
     }
 }

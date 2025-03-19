@@ -86,4 +86,13 @@ public abstract class EquipmentIntAttribute extends EquipmentAttribute {
         return max;
     }
 
+    @Override
+    public boolean equals(Object j) {
+        if (!(j instanceof EquipmentIntAttribute)) return false;
+        EquipmentIntAttribute attribute = (EquipmentIntAttribute) j;
+        if (amount != attribute.amount) return false;
+
+        return super.equals(j);
+    }
+
 }
