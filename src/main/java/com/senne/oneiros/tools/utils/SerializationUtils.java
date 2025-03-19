@@ -9,9 +9,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.EquipmentSlot;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -35,6 +34,8 @@ public class SerializationUtils {
                 return clazz.cast(deserializeAttribute(bytes));
             case "Item":
                 return clazz.cast(deserializeItem(bytes));
+            case "EquipmentSlot":
+                return clazz.cast(deserializeSlot(bytes));
             default:
                 throw new IllegalArgumentException("Unsupported type: " + clazz.getName());
         }
@@ -164,7 +165,7 @@ public class SerializationUtils {
         return key.toString().getBytes(StandardCharsets.UTF_8);
     }
 
-    public static NamespacedKey deserializeNamespacedKey(byte[] bytes) {
+    private static NamespacedKey deserializeNamespacedKey(byte[] bytes) {
         return NamespacedKey.fromString(new String(bytes, StandardCharsets.UTF_8));
     }
 
@@ -214,7 +215,7 @@ public class SerializationUtils {
         return result;
     }
 
-    public static Item deserializeItem(byte[] bytes) {
+    private static Item deserializeItem(byte[] bytes) {
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
         byte[] processing;
 
@@ -288,5 +289,13 @@ public class SerializationUtils {
         item.setNamespacedKey(deserializeNamespacedKey(processing));
 
         return item;
+    }
+
+    public static byte[] serialize(EquipmentSlot slot) {
+        return new byte[]{(byte) slot.ordinal()};
+    }
+
+    private static EquipmentSlot deserializeSlot(byte[] bytes) {
+        return EquipmentSlot.values()[bytes[0]];
     }
 }

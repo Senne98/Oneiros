@@ -8,6 +8,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.senne.oneiros.tools.utils.SerializationUtils.serialize;
 
@@ -25,8 +26,7 @@ public class MaxHealth extends EquipmentIntAttribute {
     @Override
     public com.senne.oneiros.atributes.attributeTypes.Attribute copy() {
         MaxHealth clone = new MaxHealth();
-        clone.setAmount(amount);
-        clone.setSlots(new ArrayList<>(slots));
+        clone.setSlots(new HashMap<>(slots));
         return clone;
     }
 }

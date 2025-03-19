@@ -9,6 +9,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 
 import static com.senne.oneiros.tools.utils.DoubleUtils.isDouble;
 import static java.lang.Double.parseDouble;
@@ -18,7 +19,9 @@ public class EquipmentDoubleTextEvent {
     public static void onChat(Player player, String message) {
 
         String activeChatKey = ActiveChat.getActiveChat(player.getUniqueId());
-        NamespacedKey key = NamespacedKey.fromString(activeChatKey.replaceFirst("equipmentIntAttribute:", ""));
+        // equipmentDoubleAttribute:namespacedkey;slot
+        NamespacedKey key = NamespacedKey.fromString(activeChatKey.replaceFirst("equipmentDoubleAttribute:", "").split(";")[0]);
+        EquipmentSlot slot = EquipmentSlot.valueOf(activeChatKey.replaceFirst("equipmentDoubleAttribute:", "").split(";")[1]);
 
         EquipmentDoubleAttribute attribute = (EquipmentDoubleAttribute) ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(key);
 
@@ -34,7 +37,9 @@ public class EquipmentDoubleTextEvent {
 
         double amount = parseDouble(message);
 
-        attribute.setAmount(amount);
+        ActiveChat.removeActiveChat(player.getUniqueId());
+
+        attribute.setAmount(slot, amount);
 
         EquipmentSlotsUI ui = new EquipmentSlotsUI(player, attribute.getKey());
         player.openInventory(ui.getInventory());

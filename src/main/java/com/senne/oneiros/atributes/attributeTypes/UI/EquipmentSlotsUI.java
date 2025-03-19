@@ -1,6 +1,9 @@
 package com.senne.oneiros.atributes.attributeTypes.UI;
 
 import com.senne.oneiros.Oneiros;
+import com.senne.oneiros.atributes.attributeTypes.Attribute;
+import com.senne.oneiros.atributes.attributeTypes.EquipmentDoubleAttribute;
+import com.senne.oneiros.atributes.attributeTypes.EquipmentIntAttribute;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
@@ -10,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +29,16 @@ public class EquipmentSlotsUI implements InventoryHolder {
 
     public EquipmentSlotsUI(Player player, NamespacedKey attributeKey) {
         inv = Bukkit.createInventory(this, 54, "Armor Slots");
+
+        List<EquipmentSlot> keys = new ArrayList<>();
+        if (ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(attributeKey) != null) {
+            Attribute attribute = ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(attributeKey);
+            if (attribute instanceof EquipmentIntAttribute) {
+                keys = ((EquipmentIntAttribute) attribute).getSlots();
+            } else if (attribute instanceof EquipmentDoubleAttribute) {
+                keys = ((EquipmentDoubleAttribute) attribute).getSlots();
+            }
+        }
 
         ItemStack item;
         ItemMeta meta;
@@ -50,8 +64,12 @@ public class EquipmentSlotsUI implements InventoryHolder {
         item = new ItemStack(Material.CARROT_ON_A_STICK);
         meta = item.getItemMeta();
         meta.displayName(Component.text("Hand").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
-        meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "hand"), PersistentDataType.BOOLEAN, false);
+        if (keys.contains(EquipmentSlot.HAND)) {
+            lore = List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        } else {
+            lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        }
+        //meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "hand"), PersistentDataType.BOOLEAN, false);
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(28, item);
@@ -59,8 +77,12 @@ public class EquipmentSlotsUI implements InventoryHolder {
         item = new ItemStack(Material.WARPED_FUNGUS_ON_A_STICK);
         meta = item.getItemMeta();
         meta.displayName(Component.text("Off hand").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
-        meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "offHand"), PersistentDataType.BOOLEAN, false);
+        if (keys.contains(EquipmentSlot.OFF_HAND)) {
+            lore = List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        } else {
+            lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        }
+        //meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "offHand"), PersistentDataType.BOOLEAN, false);
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(29, item);
@@ -68,8 +90,12 @@ public class EquipmentSlotsUI implements InventoryHolder {
         item = new ItemStack(Material.IRON_BOOTS);
         meta = item.getItemMeta();
         meta.displayName(Component.text("Feet").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
-        meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "feet"), PersistentDataType.BOOLEAN, false);
+        if (keys.contains(EquipmentSlot.FEET)) {
+            lore = List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        } else {
+            lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        }
+        //meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "feet"), PersistentDataType.BOOLEAN, false);
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(30, item);
@@ -77,8 +103,12 @@ public class EquipmentSlotsUI implements InventoryHolder {
         item = new ItemStack(Material.IRON_LEGGINGS);
         meta = item.getItemMeta();
         meta.displayName(Component.text("Legs").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
-        meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "legs"), PersistentDataType.BOOLEAN, false);
+        if (keys.contains(EquipmentSlot.LEGS)) {
+            lore = List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        } else {
+            lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        }
+        //meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "legs"), PersistentDataType.BOOLEAN, false);
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(31, item);
@@ -86,8 +116,12 @@ public class EquipmentSlotsUI implements InventoryHolder {
         item = new ItemStack(Material.IRON_CHESTPLATE);
         meta = item.getItemMeta();
         meta.displayName(Component.text("Chest").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
-        meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "chest"), PersistentDataType.BOOLEAN, false);
+        if (keys.contains(EquipmentSlot.CHEST)) {
+            lore = List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        } else {
+            lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        }
+        //meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "chest"), PersistentDataType.BOOLEAN, false);
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(32, item);
@@ -95,8 +129,12 @@ public class EquipmentSlotsUI implements InventoryHolder {
         item = new ItemStack(Material.IRON_HELMET);
         meta = item.getItemMeta();
         meta.displayName(Component.text("Head").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
-        meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "head"), PersistentDataType.BOOLEAN, false);
+        if (keys.contains(EquipmentSlot.HEAD)) {
+            lore = List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        } else {
+            lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        }
+        //meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "head"), PersistentDataType.BOOLEAN, false);
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(33, item);
@@ -106,8 +144,12 @@ public class EquipmentSlotsUI implements InventoryHolder {
         meta.displayName(Component.text("Body").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
         lore = new ArrayList<>();
         lore.add(Component.text("Only for horses, dogs, ...").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
-        lore.add(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
-        meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "body"), PersistentDataType.BOOLEAN, false);
+        if (keys.contains(EquipmentSlot.BODY)) {
+            lore = List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        } else {
+            lore = List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        }
+        //meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "body"), PersistentDataType.BOOLEAN, false);
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(34, item);

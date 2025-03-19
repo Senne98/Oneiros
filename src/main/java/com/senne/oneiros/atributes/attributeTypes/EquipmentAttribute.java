@@ -15,37 +15,6 @@ public abstract class EquipmentAttribute implements VariableAttribute {
     protected ItemStack icon;
     protected String name;
 
-    protected List<EquipmentSlot> slots = new ArrayList<>();
-
-    @Override
-    public byte[] exportVariables() {
-        return new byte[]{EquipmentSlotUtils.listToByte(slots)};
-    }
-
-    @Override
-    public void importVariables(byte[] variables) {
-        if (variables.length != 1) throw new IllegalArgumentException("Invalid variable length");
-
-        setSlots(EquipmentSlotUtils.listFromByte(variables[0]));
-    }
-
-    public List<EquipmentSlot> getSlots() {
-        return slots;
-    }
-
-    public void setSlots(List<EquipmentSlot> slots) {
-        this.slots = slots;
-    }
-
-    public void addSlot(EquipmentSlot slot) {
-        if (slots.contains(slot)) return;
-        slots.add(slot);
-    }
-
-    public void removeSlot(EquipmentSlot slot) {
-        slots.remove(slot);
-    }
-
     @Override
     public String getName() {
         return name;
@@ -66,9 +35,8 @@ public abstract class EquipmentAttribute implements VariableAttribute {
         if (!(j instanceof EquipmentAttribute)) return false;
         EquipmentAttribute attribute = (EquipmentAttribute) j;
         if (!attribute.name.equals(this.name)) return false;
-        if (!attribute.namespacedKey.equals(this.namespacedKey)) return false;
         if (!attribute.icon.equals(this.icon)) return false;
 
-        return attribute.getSlots().stream().allMatch(this.slots::contains);
+        return attribute.namespacedKey.equals(this.namespacedKey);
     }
 }

@@ -2,12 +2,17 @@ package com.senne.oneiros.atributes.attributeTypes.events;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.AttributeUI;
+import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
 import com.senne.oneiros.atributes.attributeTypes.Attribute;
 import com.senne.oneiros.atributes.attributeTypes.EquipmentAttribute;
+import com.senne.oneiros.atributes.attributeTypes.EquipmentDoubleAttribute;
+import com.senne.oneiros.atributes.attributeTypes.EquipmentIntAttribute;
 import com.senne.oneiros.atributes.attributeTypes.UI.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
@@ -23,6 +28,7 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class EquipmentSlotsUIEvent implements Listener {
 
@@ -33,26 +39,52 @@ public class EquipmentSlotsUIEvent implements Listener {
 
         if (e.getRawSlot() > 53) return;
 
+        Player player = (Player) e.getWhoClicked();
+        UUID uuid = player.getUniqueId();
         int slot = e.getSlot();
         Inventory inv = e.getInventory();
         ItemStack item;
         ItemMeta meta;
+        Attribute attribute = ActiveItemCreation.getActiveItem(uuid).getAttribute(inv.getItem(13).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "attribute"), new NamespacedKeyDataType()));
+        List<EquipmentSlot> slots = new ArrayList<>();
 
+        boolean doubleAttribute = attribute instanceof EquipmentDoubleAttribute;
+
+        if (attribute instanceof EquipmentDoubleAttribute) slots = ((EquipmentDoubleAttribute) attribute).getSlots();
+        if (attribute instanceof EquipmentIntAttribute) slots = ((EquipmentIntAttribute) attribute).getSlots();
 
         if (slot == 28) {
             item = inv.getItem(28);
             meta = item.getItemMeta();
 
-            if (meta.getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "hand"), PersistentDataType.BOOLEAN)) {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "hand"), PersistentDataType.BOOLEAN, false);
+            if (slots.contains(EquipmentSlot.HAND)) {
                 meta.lore(List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                if (doubleAttribute) {
+                    ((EquipmentDoubleAttribute) attribute).removeSlot(EquipmentSlot.HAND);
+                } else {
+                    ((EquipmentIntAttribute) attribute).removeSlot(EquipmentSlot.HAND);
+                }
             } else {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "hand"), PersistentDataType.BOOLEAN, true);
-                meta.lore(List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                player.closeInventory();
+
+                player.sendMessage(Component.text("Enter the amount in the chat.").decoration(TextDecoration.ITALIC, false));
+                player.sendMessage(Component.text("[Cancel]")
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the amount input.").color(NamedTextColor.RED)))
+                        .decoration(TextDecoration.ITALIC, false)
+                        .color(NamedTextColor.RED)
+                        .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));
+
+                if (doubleAttribute) {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentDoubleAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.HAND);
+                } else {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentIntAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.HAND);
+                }
             }
 
             item.setItemMeta(meta);
             inv.setItem(28, item);
+
+            refreshExample(inv, uuid, attribute.getKey());
 
             return;
         }
@@ -61,16 +93,34 @@ public class EquipmentSlotsUIEvent implements Listener {
             item = inv.getItem(29);
             meta = item.getItemMeta();
 
-            if (meta.getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "offHand"), PersistentDataType.BOOLEAN)) {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "offHand"), PersistentDataType.BOOLEAN, false);
+            if (slots.contains(EquipmentSlot.OFF_HAND)) {
                 meta.lore(List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                if (doubleAttribute) {
+                    ((EquipmentDoubleAttribute) attribute).removeSlot(EquipmentSlot.OFF_HAND);
+                } else {
+                    ((EquipmentIntAttribute) attribute).removeSlot(EquipmentSlot.OFF_HAND);
+                }
             } else {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "offHand"), PersistentDataType.BOOLEAN, true);
-                meta.lore(List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                player.closeInventory();
+
+                player.sendMessage(Component.text("Enter the amount in the chat.").decoration(TextDecoration.ITALIC, false));
+                player.sendMessage(Component.text("[Cancel]")
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the amount input.").color(NamedTextColor.RED)))
+                        .decoration(TextDecoration.ITALIC, false)
+                        .color(NamedTextColor.RED)
+                        .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));
+
+                if (doubleAttribute) {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentDoubleAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.OFF_HAND);
+                } else {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentIntAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.OFF_HAND);
+                }
             }
 
             item.setItemMeta(meta);
             inv.setItem(29, item);
+
+            refreshExample(inv, uuid, attribute.getKey());
 
             return;
         }
@@ -79,16 +129,34 @@ public class EquipmentSlotsUIEvent implements Listener {
             item = inv.getItem(30);
             meta = item.getItemMeta();
 
-            if (meta.getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "feet"), PersistentDataType.BOOLEAN)) {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "feet"), PersistentDataType.BOOLEAN, false);
+            if (slots.contains(EquipmentSlot.FEET)) {
                 meta.lore(List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                if (doubleAttribute) {
+                    ((EquipmentDoubleAttribute) attribute).removeSlot(EquipmentSlot.FEET);
+                } else {
+                    ((EquipmentIntAttribute) attribute).removeSlot(EquipmentSlot.FEET);
+                }
             } else {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "feet"), PersistentDataType.BOOLEAN, true);
-                meta.lore(List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                player.closeInventory();
+
+                player.sendMessage(Component.text("Enter the amount in the chat.").decoration(TextDecoration.ITALIC, false));
+                player.sendMessage(Component.text("[Cancel]")
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the amount input.").color(NamedTextColor.RED)))
+                        .decoration(TextDecoration.ITALIC, false)
+                        .color(NamedTextColor.RED)
+                        .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));
+
+                if (doubleAttribute) {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentDoubleAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.FEET);
+                } else {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentIntAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.FEET);
+                }
             }
 
             item.setItemMeta(meta);
             inv.setItem(30, item);
+
+            refreshExample(inv, uuid, attribute.getKey());
 
             return;
         }
@@ -97,16 +165,34 @@ public class EquipmentSlotsUIEvent implements Listener {
             item = inv.getItem(31);
             meta = item.getItemMeta();
 
-            if (meta.getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "legs"), PersistentDataType.BOOLEAN)) {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "legs"), PersistentDataType.BOOLEAN, false);
+            if (slots.contains(EquipmentSlot.LEGS)) {
                 meta.lore(List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                if (doubleAttribute) {
+                    ((EquipmentDoubleAttribute) attribute).removeSlot(EquipmentSlot.LEGS);
+                } else {
+                    ((EquipmentIntAttribute) attribute).removeSlot(EquipmentSlot.LEGS);
+                }
             } else {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "legs"), PersistentDataType.BOOLEAN, true);
-                meta.lore(List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                player.closeInventory();
+
+                player.sendMessage(Component.text("Enter the amount in the chat.").decoration(TextDecoration.ITALIC, false));
+                player.sendMessage(Component.text("[Cancel]")
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the amount input.").color(NamedTextColor.RED)))
+                        .decoration(TextDecoration.ITALIC, false)
+                        .color(NamedTextColor.RED)
+                        .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));
+
+                if (doubleAttribute) {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentDoubleAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.LEGS);
+                } else {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentIntAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.LEGS);
+                }
             }
 
             item.setItemMeta(meta);
             inv.setItem(31, item);
+
+            refreshExample(inv, uuid, attribute.getKey());
 
             return;
         }
@@ -115,16 +201,34 @@ public class EquipmentSlotsUIEvent implements Listener {
             item = inv.getItem(32);
             meta = item.getItemMeta();
 
-            if (meta.getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "chest"), PersistentDataType.BOOLEAN)) {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "chest"), PersistentDataType.BOOLEAN, false);
+            if (slots.contains(EquipmentSlot.CHEST)) {
                 meta.lore(List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                if (doubleAttribute) {
+                    ((EquipmentDoubleAttribute) attribute).removeSlot(EquipmentSlot.CHEST);
+                } else {
+                    ((EquipmentIntAttribute) attribute).removeSlot(EquipmentSlot.CHEST);
+                }
             } else {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "chest"), PersistentDataType.BOOLEAN, true);
-                meta.lore(List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                player.closeInventory();
+
+                player.sendMessage(Component.text("Enter the amount in the chat.").decoration(TextDecoration.ITALIC, false));
+                player.sendMessage(Component.text("[Cancel]")
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the amount input.").color(NamedTextColor.RED)))
+                        .decoration(TextDecoration.ITALIC, false)
+                        .color(NamedTextColor.RED)
+                        .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));
+
+                if (doubleAttribute) {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentDoubleAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.CHEST);
+                } else {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentIntAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.CHEST);
+                }
             }
 
             item.setItemMeta(meta);
             inv.setItem(32, item);
+
+            refreshExample(inv, uuid, attribute.getKey());
 
             return;
         }
@@ -133,16 +237,34 @@ public class EquipmentSlotsUIEvent implements Listener {
             item = inv.getItem(33);
             meta = item.getItemMeta();
 
-            if (meta.getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "head"), PersistentDataType.BOOLEAN)) {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "head"), PersistentDataType.BOOLEAN, false);
+            if (slots.contains(EquipmentSlot.HEAD)) {
                 meta.lore(List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                if (doubleAttribute) {
+                    ((EquipmentDoubleAttribute) attribute).removeSlot(EquipmentSlot.HEAD);
+                } else {
+                    ((EquipmentIntAttribute) attribute).removeSlot(EquipmentSlot.HEAD);
+                }
             } else {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "head"), PersistentDataType.BOOLEAN, true);
-                meta.lore(List.of(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                player.closeInventory();
+
+                player.sendMessage(Component.text("Enter the amount in the chat.").decoration(TextDecoration.ITALIC, false));
+                player.sendMessage(Component.text("[Cancel]")
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the amount input.").color(NamedTextColor.RED)))
+                        .decoration(TextDecoration.ITALIC, false)
+                        .color(NamedTextColor.RED)
+                        .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));
+
+                if (doubleAttribute) {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentDoubleAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.HEAD);
+                } else {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentIntAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.HEAD);
+                }
             }
 
             item.setItemMeta(meta);
             inv.setItem(33, item);
+
+            refreshExample(inv, uuid, attribute.getKey());
 
             return;
         }
@@ -150,64 +272,54 @@ public class EquipmentSlotsUIEvent implements Listener {
         if (slot == 34) {
             item = inv.getItem(34);
             meta = item.getItemMeta();
-            List<Component> lore;
 
-            if (meta.getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "body"), PersistentDataType.BOOLEAN)) {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "body"), PersistentDataType.BOOLEAN, false);
-                lore = new ArrayList<>();
-                lore.add(Component.text("Only for horses, dogs, ...").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
-                lore.add(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+            if (slots.contains(EquipmentSlot.BODY)) {
+                meta.lore(List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
+                if (doubleAttribute) {
+                    ((EquipmentDoubleAttribute) attribute).removeSlot(EquipmentSlot.BODY);
+                } else {
+                    ((EquipmentIntAttribute) attribute).removeSlot(EquipmentSlot.BODY);
+                }
             } else {
-                meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "body"), PersistentDataType.BOOLEAN, true);
-                lore = new ArrayList<>();
-                lore.add(Component.text("Only for horses, dogs, ...").color(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
-                lore.add(Component.text("■ Click to remove!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));            }
+                player.closeInventory();
 
-            meta.lore(lore);
+                player.sendMessage(Component.text("Enter the amount in the chat.").decoration(TextDecoration.ITALIC, false));
+                player.sendMessage(Component.text("[Cancel]")
+                        .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the amount input.").color(NamedTextColor.RED)))
+                        .decoration(TextDecoration.ITALIC, false)
+                        .color(NamedTextColor.RED)
+                        .clickEvent(ClickEvent.runCommand("/oneiroscancel defaultattribute")));
+
+                if (doubleAttribute) {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentDoubleAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.BODY);
+                } else {
+                    ActiveChat.addActiveChat(player.getUniqueId(), "equipmentIntAttribute:" + attribute.getKey().asString() + ";" + EquipmentSlot.BODY);
+                }
+            }
+
             item.setItemMeta(meta);
             inv.setItem(34, item);
+
+            refreshExample(inv, uuid, attribute.getKey());
 
             return;
         }
 
         if (slot == 49) {
-            Player player = (Player) e.getWhoClicked();
-            NamespacedKey attributeKey = e.getInventory().getItem(13).getItemMeta()
-                    .getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "attribute"), new NamespacedKeyDataType());
-            Attribute attribute = ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(attributeKey);
-
-            if(!(attribute instanceof EquipmentAttribute)) return;
-
-            EquipmentAttribute equipmentAttribute = (EquipmentAttribute) attribute;
-
-            if (inv.getItem(28).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "hand"), PersistentDataType.BOOLEAN)) {
-                equipmentAttribute.addSlot(EquipmentSlot.HAND);
-            }
-            if (inv.getItem(29).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "offHand"), PersistentDataType.BOOLEAN)) {
-                equipmentAttribute.addSlot(EquipmentSlot.OFF_HAND);
-            }
-            if (inv.getItem(30).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "feet"), PersistentDataType.BOOLEAN)) {
-                equipmentAttribute.addSlot(EquipmentSlot.FEET);
-            }
-            if (inv.getItem(31).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "legs"), PersistentDataType.BOOLEAN)) {
-                equipmentAttribute.addSlot(EquipmentSlot.LEGS);
-            }
-            if (inv.getItem(32).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "chest"), PersistentDataType.BOOLEAN)) {
-                equipmentAttribute.addSlot(EquipmentSlot.CHEST);
-            }
-            if (inv.getItem(33).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "head"), PersistentDataType.BOOLEAN)) {
-                equipmentAttribute.addSlot(EquipmentSlot.HEAD);
-            }
-            if (inv.getItem(34).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "body"), PersistentDataType.BOOLEAN)) {
-                equipmentAttribute.addSlot(EquipmentSlot.BODY);
-            }
-
             player.closeInventory();
 
             AttributeUI attributeUI = new AttributeUI(player, 1);
             player.openInventory(attributeUI.getInventory());
 
         }
+    }
+
+    private void refreshExample(Inventory inv, UUID uuid, NamespacedKey key) {
+        ItemStack item = ActiveItemCreation.getActiveItem(uuid).createItem((byte) 1);
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "attribute"), new NamespacedKeyDataType(), key);
+        item.setItemMeta(meta);
+        inv.setItem(13, item);
     }
 
 }

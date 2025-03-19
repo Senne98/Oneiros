@@ -5,9 +5,12 @@ import com.senne.oneiros.atributes.attributeTypes.EquipmentIntAttribute;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 import static com.senne.oneiros.tools.utils.SerializationUtils.serialize;
 import static org.apache.commons.lang3.SerializationUtils.deserialize;
@@ -26,8 +29,7 @@ public class Armor extends EquipmentIntAttribute {
     @Override
     public com.senne.oneiros.atributes.attributeTypes.Attribute copy() {
         Armor clone = new Armor();
-        clone.setAmount(amount);
-        clone.setSlots(new ArrayList<>(slots));
+        clone.setSlots(new HashMap<>(slots));
         return clone;
     }
 }

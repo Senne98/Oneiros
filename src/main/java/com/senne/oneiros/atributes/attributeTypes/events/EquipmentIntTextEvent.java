@@ -10,13 +10,15 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class EquipmentIntTextEvent {
 
     public static void onChat(Player player, String message) {
 
         String activeChatKey = ActiveChat.getActiveChat(player.getUniqueId());
-        NamespacedKey key = NamespacedKey.fromString(activeChatKey.replaceFirst("equipmentIntAttribute:", ""));
+        NamespacedKey key = NamespacedKey.fromString(activeChatKey.replaceFirst("equipmentIntAttribute:", "").split(";")[0]);
+        EquipmentSlot slot = EquipmentSlot.valueOf(activeChatKey.replaceFirst("equipmentIntAttribute:", "").split(";")[1]);
 
         EquipmentIntAttribute attribute = (EquipmentIntAttribute) ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(key);
 
@@ -32,7 +34,9 @@ public class EquipmentIntTextEvent {
 
         int amount = Integer.parseInt(message);
 
-        attribute.setAmount(amount);
+        attribute.setAmount(slot, amount);
+
+        ActiveChat.removeActiveChat(player.getUniqueId());
 
         EquipmentSlotsUI ui = new EquipmentSlotsUI(player, attribute.getKey());
         player.openInventory(ui.getInventory());

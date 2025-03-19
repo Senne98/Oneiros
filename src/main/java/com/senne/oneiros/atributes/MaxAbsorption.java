@@ -8,6 +8,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.senne.oneiros.tools.utils.SerializationUtils.serialize;
 
@@ -25,8 +26,7 @@ public class MaxAbsorption extends EquipmentIntAttribute {
     @Override
     public com.senne.oneiros.atributes.attributeTypes.Attribute copy() {
         MaxAbsorption clone = new MaxAbsorption();
-        clone.setAmount(amount);
-        clone.setSlots(new ArrayList<>(slots));
+        clone.setSlots(new HashMap<>(slots));
         return clone;
     }
 }

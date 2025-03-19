@@ -10,7 +10,7 @@ public class AttributeRegister {
     private static List<Attribute> attributes = new ArrayList<>();
 
     public static void registerAttribute(Attribute attribute) {
-        attributes.add(attribute);
+        attributes.add(attribute.copy());
     }
 
     public static List<Attribute> getAttributes() {
