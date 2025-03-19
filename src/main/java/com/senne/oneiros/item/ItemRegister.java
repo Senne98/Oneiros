@@ -1,5 +1,6 @@
 package com.senne.oneiros.item;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 
 import java.util.ArrayList;
@@ -9,23 +10,23 @@ import java.util.List;
 public class ItemRegister {
 
     //String is namespace of the item pack
-    private static HashMap<String, List<Item>> items = new HashMap<>();
+    private static HashMap<String, Pack> packs = new HashMap<>();
 
     public static void registerItem(Item item, String pack) {
-        if (!items.containsKey(pack)) {
+        if (!packs.containsKey(pack)) {
             throw new IllegalArgumentException("Pack not registered");
         }
-        items.get(pack).add(item);
+        packs.get(pack).addItem(item);
     }
 
     public static Item getItem(NamespacedKey key) {
 
-        List<Item> pack = items.get(key.getNamespace());
-        if (pack == null) {
+        List<Item> items = packs.get(key.getNamespace()).getItems();
+        if (items == null) {
             return null;
         }
 
-        for (Item item : pack) {
+        for (Item item : items) {
             if (item.getNamespacedKey().getKey().equals(key.getKey())) {
                 return item;
             }
@@ -35,24 +36,43 @@ public class ItemRegister {
     }
 
     public static List<Item> getItems() {
-        List<Item> itemsMap = new ArrayList<>();
+        List<Item> items = new ArrayList<>();
 
-        for (String pack : items.keySet()) {
-            itemsMap.addAll(items.get(pack));
+        for (String pack : packs.keySet()) {
+            items.addAll(packs.get(pack).getItems());
         }
 
-        return itemsMap;
+        return items;
     }
 
     public static List<Item> getPack(String pack) {
-        return items.get(pack);
+        return packs.get(pack).getItems();
     }
 
     public static List<String> getPacks() {
-        return items.keySet().stream().toList();
+        return packs.keySet().stream().toList();
     }
 
     public static void registerPack(String pack) {
-        items.put(pack, new ArrayList<>());
+        packs.put(pack, new Pack(pack));
+    }
+
+    public static void removeItem(NamespacedKey namespacedKey) {
+        String key = namespacedKey.getKey();
+        String namespace = namespacedKey.getNamespace();
+
+        packs.get(namespace).removeItem(key);
+    }
+
+    public static void setPackAuthors(String pack, String[] authors) {
+        packs.get(pack).setAuthors(authors);
+    }
+
+    public static void setPackIcon(String pack, Material icon) {
+        packs.get(pack).setIcon(icon);
+    }
+
+    public static void setPackCmd(String pack, int cmd) {
+        packs.get(pack).setCmd(cmd);
     }
 }

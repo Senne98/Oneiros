@@ -1,13 +1,7 @@
 package com.senne.oneiros.atributes.attributeTypes;
 
-import com.senne.oneiros.tools.utils.EquipmentSlotUtils;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class EquipmentAttribute implements VariableAttribute {
 
