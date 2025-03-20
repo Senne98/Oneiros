@@ -14,6 +14,7 @@ import com.senne.oneiros.UI.itemGet.GetItemUIEvent;
 import com.senne.oneiros.atributes.attributeTypes.events.TextUIListener;
 import com.senne.oneiros.commands.CreateItemCmd;
 import com.senne.oneiros.commands.GetItemCmd;
+import com.senne.oneiros.tools.chatTextAPI.ChatHandler;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -52,6 +53,7 @@ public class Oneiros extends JavaPlugin {
         // Registering the commands
         logger.info("[Oneiros] Loading commands ...");
         if (!mocked) buildCommands();
+        if (!mocked) ChatHandler.buildCommand(plugin);
 
         // Registering the events
         logger.info("[Oneiros] Loading events ...");
