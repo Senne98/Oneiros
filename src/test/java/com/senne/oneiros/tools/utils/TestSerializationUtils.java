@@ -55,6 +55,10 @@ public class TestSerializationUtils {
     public void testInt() {
         int value = 1;
         assertEquals(value, deserialize(serialize(value), Integer.class));
+        value = -1;
+        assertEquals(value, deserialize(serialize(value), Integer.class));
+        value = 0;
+        assertEquals(value, deserialize(serialize(value), Integer.class));
     }
 
     @Test
@@ -63,6 +67,9 @@ public class TestSerializationUtils {
         assertEquals(value, deserialize(serialize(value), Double.class));
 
         value = 0.0;
+        assertEquals(value, deserialize(serialize(value), Double.class));
+
+        value = -20.5;
         assertEquals(value, deserialize(serialize(value), Double.class));
     }
 
@@ -114,7 +121,7 @@ public class TestSerializationUtils {
         item.setNamespace("oneiros");
         item.setKey("item");
 
-        assertEquals(item, deserialize(serialize(item), Item.class));
+        assertTrue(item.equals(deserialize(serialize(item), Item.class)));
     }
 
     @Test

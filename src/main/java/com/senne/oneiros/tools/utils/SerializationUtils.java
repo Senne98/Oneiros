@@ -16,6 +16,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.senne.oneiros.tools.utils.ByteUtils.merge;
 
@@ -56,17 +57,15 @@ public class SerializationUtils {
         return Material.getMaterial(new String(bytes, StandardCharsets.UTF_8));
     }
 
-    public static byte[] serialize(int num) {
-        byte[] numBytes = new byte[4];
-        numBytes[0] = (byte) (num >> 24);
-        numBytes[1] = (byte) (num >> 16);
-        numBytes[2] = (byte) (num >> 8);
-        numBytes[3] = (byte) num;
-        return numBytes;
+    public static byte[] serialize(int integer) {
+        ByteBuffer bb = ByteBuffer.allocate(4);
+        bb.putInt(integer);
+        return bb.array();
     }
 
     private static int deserializeInt(byte[] bytes) {
-        return (bytes[0] << 24) + (bytes[1] << 16) + (bytes[2] << 8) + bytes[3];
+        ByteBuffer bb = ByteBuffer.wrap(bytes);
+        return bb.getInt();
     }
 
     public static byte[] serialize(double num) {
