@@ -53,8 +53,8 @@ public class ItemRegister {
         return packs.keySet().stream().toList();
     }
 
-    public static void registerPack(String pack) {
-        packs.put(pack, new Pack(pack));
+    public static void registerPack(Pack pack) {
+        packs.put(pack.getName(), pack);
     }
 
     public static void removeItem(NamespacedKey namespacedKey) {

@@ -6,6 +6,7 @@ import com.senne.oneiros.atributes.attributeTypes.Attribute;
 import com.senne.oneiros.tools.utils.AttributeUtils;
 import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -27,13 +28,16 @@ public class Item {
 
     public Item(Material material) {
         this.material = material;
+        displayName =  Component.text(material.name()).decoration(TextDecoration.ITALIC, false);
+        cmd = -1;
     }
 
     public ItemStack createItem(int amount) {
         ItemStack item = new ItemStack(material, amount);
 
         ItemMeta meta = item.getItemMeta();
-        meta.setCustomModelData(cmd);
+
+        if (cmd != -1) meta.setCustomModelData(cmd);
         meta.displayName(displayName);
         meta.lore(lore);
 
@@ -157,8 +161,6 @@ public class Item {
 
         Item item = (Item) o;
 
-        if (cmd != item.cmd) return false;
-        if (material != item.material) return false;
         if ((displayName == null && item.displayName == null) || !displayName.equals(item.displayName)) return false;
         if (!lore.equals(item.lore)) return false;
         if (!attributes.equals(item.attributes)) return false;

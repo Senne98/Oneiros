@@ -1,6 +1,11 @@
 package com.senne.oneiros.item;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +70,25 @@ public class Pack {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ItemStack generateIcon() {
+        ItemStack item = new ItemStack(icon);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(Component.text(name).decoration(TextDecoration.ITALIC, false));
+
+        String loreText = "Authors:";
+        for (int i = 0; i < authors.length; i++) {
+            loreText += " " + authors[i];
+            if (i != authors.length - 1) {
+                loreText += ",";
+            }
+        }
+
+        meta.lore(List.of(Component.text(loreText).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY)));
+
+        item.setItemMeta(meta);
+        return item;
     }
 
     @Override

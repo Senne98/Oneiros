@@ -3,6 +3,7 @@ package com.senne.oneiros.UI.itemCreation.chatUI;
 import com.senne.oneiros.UI.itemCreation.PackSelectUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.ItemRegister;
+import com.senne.oneiros.item.Pack;
 import com.senne.oneiros.tools.utils.StringUtils;
 import io.papermc.paper.event.player.ChatEvent;
 import net.kyori.adventure.text.Component;
@@ -45,7 +46,7 @@ public class PackCreateTextUIEvent implements Listener {
             pack = pack.replaceAll(" ", "");
 
             ActiveItemCreation.getActiveItem(player.getUniqueId()).setNamespace(pack);
-            ItemRegister.registerPack(pack);
+            ItemRegister.registerPack(new Pack(pack));
             ActiveChat.removeActiveChat(player.getUniqueId());
 
             ActiveItemCreation.getActiveItem(player.getUniqueId()).setNamespace(pack);

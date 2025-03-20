@@ -15,7 +15,7 @@ public class TestItemRegister {
 
     @BeforeEach
     public void setUp() {
-        ItemRegister.registerPack("pack");
+        ItemRegister.registerPack(new Pack("pack"));
         item1 = new Item(Material.ACACIA_BOAT);
         item1.setNamespace("pack");
         item1.setKey("item");
@@ -24,7 +24,7 @@ public class TestItemRegister {
         item2.setNamespace("pack");
         item2.setKey("cherry");
         ItemRegister.registerItem(item2, "pack");
-        ItemRegister.registerPack("pock");
+        ItemRegister.registerPack(new Pack("pock"));
         item3 = new Item(Material.ACACIA_BOAT);
         item3.setNamespace("pock");
         item3.setKey("itempock");
