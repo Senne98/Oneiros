@@ -9,6 +9,7 @@ import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
 import com.senne.oneiros.item.ItemRegister;
+import com.senne.oneiros.item.Pack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -114,5 +115,37 @@ public class TestSerializationUtils {
         item.setKey("item");
 
         assertEquals(item, deserialize(serialize(item), Item.class));
+    }
+
+    @Test
+    public void testString() {
+        String string = "Hello, world!";
+        assertEquals(string, deserialize(serialize(string), String.class));
+    }
+
+    @Test
+    public void testPack() {
+        Pack pack = new Pack("name");
+        pack.setAuthors(new String[]{"author", "other"});
+        pack.setCmd(10);
+        pack.setIcon(Material.TROPICAL_FISH);
+
+        Item item = new Item(Material.PAPER);
+        item.setDisplayName(Component.text("Test"));
+        item.setNamespace("name");
+        item.setKey("item");
+
+        Item item2 = new Item(Material.DIAMOND);
+        item2.setDisplayName(Component.text("Test"));
+        item2.setNamespace("name");
+        item2.setKey("item");
+
+        List<Item> items = new ArrayList<>();
+        items.add(item);
+        items.add(item2);
+
+        pack.setItems(items);
+
+        assertEquals(pack, deserialize(serialize(pack), Pack.class));
     }
 }

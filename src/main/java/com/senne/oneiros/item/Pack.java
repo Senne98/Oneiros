@@ -66,4 +66,16 @@ public class Pack {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pack)) return false;
+        Pack pack = (Pack) o;
+
+        if (getCmd() != pack.getCmd()) return false;
+        if (!getName().equals(pack.getName())) return false;
+        if (!getIcon().equals(pack.getIcon())) return false;
+        return getItems().equals(pack.getItems());
+    }
 }

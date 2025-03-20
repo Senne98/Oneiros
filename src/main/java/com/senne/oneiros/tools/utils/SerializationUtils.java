@@ -5,6 +5,7 @@ import com.senne.oneiros.atributes.attributeTypes.Attribute;
 import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
 import com.senne.oneiros.atributes.attributeTypes.VariableAttribute;
 import com.senne.oneiros.item.Item;
+import com.senne.oneiros.item.Pack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Material;
@@ -15,6 +16,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.senne.oneiros.tools.utils.ByteUtils.merge;
 
 public class SerializationUtils {
 
@@ -36,6 +39,10 @@ public class SerializationUtils {
                 return clazz.cast(deserializeItem(bytes));
             case "EquipmentSlot":
                 return clazz.cast(deserializeSlot(bytes));
+            case "String":
+                return clazz.cast(deserializeString(bytes));
+            case "Pack":
+                return clazz.cast(deserializePack(bytes));
             default:
                 throw new IllegalArgumentException("Unsupported type: " + clazz.getName());
         }
@@ -102,13 +109,13 @@ public class SerializationUtils {
             result[0] = 1;
 
             byte[] attributeBytes = serialize(attribute.getKey());
-            result = ByteUtils.merge(result, serialize(attributeBytes.length));
-            result = ByteUtils.merge(result, attributeBytes);
+            result = merge(result, serialize(attributeBytes.length));
+            result = merge(result, attributeBytes);
 
             byte[] attributeProperties = ((VariableAttribute) attribute).exportVariables();
 
-            result = ByteUtils.merge(result, serialize(attributeProperties.length));
-            result = ByteUtils.merge(result, attributeProperties);
+            result = merge(result, serialize(attributeProperties.length));
+            result = merge(result, attributeProperties);
 
             return result;
 
@@ -117,8 +124,8 @@ public class SerializationUtils {
         result[0] = 0;
 
         byte[] attributeBytes = serialize(attribute.getKey());
-        result = ByteUtils.merge(result, serialize(attributeBytes.length));
-        result = ByteUtils.merge(result, attributeBytes);
+        result = merge(result, serialize(attributeBytes.length));
+        result = merge(result, attributeBytes);
 
         return result;
     }
@@ -170,53 +177,74 @@ public class SerializationUtils {
     }
 
     public static byte[] serialize(Item item) {
-        byte[] result = new byte[0];
+
+        //version
+        byte[] result = serialize(0);
 
         //cmd
-        result = ByteUtils.merge(result, serialize(item.getCmd()));
+        result = merge(result, serialize(item.getCmd()));
 
         //material
         byte[] materialBytes = serialize(item.getMaterial());
-        result = ByteUtils.merge(result, serialize(materialBytes.length));
-        result = ByteUtils.merge(result, materialBytes);
+        result = merge(result, serialize(materialBytes.length));
+        result = merge(result, materialBytes);
 
         //displayName
         byte[] displayNameBytes = serialize(item.getDisplayName());
-        result = ByteUtils.merge(result, serialize(displayNameBytes.length));
-        result = ByteUtils.merge(result, displayNameBytes);
+        result = merge(result, serialize(displayNameBytes.length));
+        result = merge(result, displayNameBytes);
 
         //lore
         byte[] loreBytes = new byte[0];
         for (Component line : item.getLore()) {
             byte[] lineBytes = serialize(line);
-            loreBytes = ByteUtils.merge(loreBytes, serialize(lineBytes.length));
-            loreBytes = ByteUtils.merge(loreBytes, lineBytes);
+            loreBytes = merge(loreBytes, serialize(lineBytes.length));
+            loreBytes = merge(loreBytes, lineBytes);
         }
-        result = ByteUtils.merge(result, serialize(loreBytes.length));
-        result = ByteUtils.merge(result, loreBytes);
+        result = merge(result, serialize(loreBytes.length));
+        result = merge(result, loreBytes);
 
         //attributes
         byte[] attributeListBytes = new byte[0];
         for (Attribute attribute : item.getAttributes()) {
             byte[] attributeBytes = serialize(attribute);
-            attributeListBytes = ByteUtils.merge(attributeListBytes, serialize(attributeBytes.length));
-            attributeListBytes = ByteUtils.merge(attributeListBytes, attributeBytes);
+            attributeListBytes = merge(attributeListBytes, serialize(attributeBytes.length));
+            attributeListBytes = merge(attributeListBytes, attributeBytes);
         }
-        result = ByteUtils.merge(result, serialize(attributeListBytes.length));
-        result = ByteUtils.merge(result, attributeListBytes);
+        result = merge(result, serialize(attributeListBytes.length));
+        result = merge(result, attributeListBytes);
 
         //actionHandlers: TO DO
 
         //namespacedKey
         byte[] namespaceBytes = serialize(item.getNamespacedKey());
-        result = ByteUtils.merge(result, serialize(namespaceBytes.length));
-        result = ByteUtils.merge(result, namespaceBytes);
+        result = merge(result, serialize(namespaceBytes.length));
+        result = merge(result, namespaceBytes);
 
         return result;
     }
 
-    private static Item deserializeItem(byte[] bytes) {
+    private static Item deserializeItem(byte[] bytes) throws IllegalArgumentException {
         ByteBuffer buffer = ByteBuffer.wrap(bytes);
+
+        byte[] processing;
+
+        //version
+        processing = new byte[4];
+        buffer.get(processing);
+        int version = deserializeInt(processing);
+
+        switch (version) {
+            case 0:
+                return deserializeItemV0(buffer);
+            default:
+                Oneiros.getPlugin().getLogger().warning("Unknown item version: " + version);
+                throw new IllegalArgumentException("Unknown item version: " + version);
+        }
+
+    }
+
+    private static Item deserializeItemV0(ByteBuffer buffer) {
         byte[] processing;
 
         //cmd
@@ -297,5 +325,142 @@ public class SerializationUtils {
 
     private static EquipmentSlot deserializeSlot(byte[] bytes) {
         return EquipmentSlot.values()[bytes[0]];
+    }
+
+    public static byte[] serialize(String string) {
+        return string.getBytes(StandardCharsets.UTF_8);
+    }
+
+    private static String deserializeString(byte[] bytes) {
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    public static byte[] serialize(Pack pack) {
+        byte[] result;
+        byte[] processing;
+
+        //format version
+        result = serialize(0);
+
+        //cmd
+        result = merge(result, serialize(pack.getCmd()));
+
+        //name
+        processing = serialize(pack.getName());
+        result = merge(result, serialize(processing.length));
+        result = merge(result, processing);
+
+        //authors
+        processing = new byte[0];
+        for (int i = 0; i < pack.getAuthors().length; i++) {
+            byte[] authorBytes = serialize(pack.getAuthors()[i]);
+            processing = merge(processing, serialize(authorBytes.length));
+            processing = merge(processing, authorBytes);
+        }
+        result = merge(result, serialize(processing.length));
+        result = merge(result, processing);
+
+        //icon
+        processing = serialize(pack.getIcon());
+        result = merge(result, serialize(processing.length));
+        result = merge(result, processing);
+
+        //items
+        processing = new byte[0];
+        for (Item item : pack.getItems()) {
+            byte[] itemBytes = serialize(item);
+            processing = merge(processing, serialize(itemBytes.length));
+            processing = merge(processing, itemBytes);
+        }
+        result = merge(result, serialize(processing.length));
+        result = merge(result, processing);
+
+        return result;
+    }
+
+    private static Pack deserializePack(byte[] bytes) {
+        ByteBuffer buffer = ByteBuffer.wrap(bytes);
+
+        byte[] processing;
+
+        //format version
+        processing = new byte[4];
+        buffer.get(processing);
+        int version = deserializeInt(processing);
+
+        switch (version) {
+            case 0:
+                return deserializePackV0(buffer);
+            default:
+                Oneiros.getPlugin().getLogger().warning("Unknown pack version: " + version);
+                throw new IllegalArgumentException("Unknown pack version: " + version);
+        }
+    }
+
+    private static Pack deserializePackV0(ByteBuffer buffer) {
+        byte[] processing;
+        int size;
+
+        //cmd
+        processing = new byte[4];
+        buffer.get(processing);
+        int cmd = deserializeInt(processing);
+
+        //name
+        processing = new byte[4];
+        buffer.get(processing);
+        size = deserializeInt(processing);
+        processing = new byte[size];
+        buffer.get(processing);
+        Pack pack = new Pack(deserializeString(processing));
+
+        //apply cmd
+        pack.setCmd(cmd);
+
+        //authors
+        processing = new byte[4];
+        buffer.get(processing);
+        size = deserializeInt(processing);
+        processing = new byte[size];
+        buffer.get(processing);
+        ByteBuffer authorBuffer = ByteBuffer.wrap(processing);
+        List<String> authors = new ArrayList<>();
+        while (authorBuffer.hasRemaining()) {
+            processing = new byte[4];
+            authorBuffer.get(processing);
+            size = deserializeInt(processing);
+            processing = new byte[size];
+            authorBuffer.get(processing);
+            authors.add(deserializeString(processing));
+        }
+        pack.setAuthors(authors.toArray(new String[0]));
+
+        //icon
+        processing = new byte[4];
+        buffer.get(processing);
+        size = deserializeInt(processing);
+        processing = new byte[size];
+        buffer.get(processing);
+        pack.setIcon(deserializeMaterial(processing));
+
+        //items
+        processing = new byte[4];
+        buffer.get(processing);
+        size = deserializeInt(processing);
+        processing = new byte[size];
+        buffer.get(processing);
+        ByteBuffer itemBuffer = ByteBuffer.wrap(processing);
+        List<Item> items = new ArrayList<>();
+        while (itemBuffer.hasRemaining()) {
+            processing = new byte[4];
+            itemBuffer.get(processing);
+            size = deserializeInt(processing);
+            processing = new byte[size];
+            itemBuffer.get(processing);
+            items.add(deserializeItem(processing));
+        }
+        pack.setItems(items);
+
+        return pack;
     }
 }
