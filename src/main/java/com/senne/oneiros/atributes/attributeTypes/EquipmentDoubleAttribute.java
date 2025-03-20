@@ -36,7 +36,7 @@ public abstract class EquipmentDoubleAttribute extends EquipmentAttribute {
     }
 
     public List<EquipmentSlot> getSlots() {
-        return (List<EquipmentSlot>) slots.keySet();
+        return slots.keySet().stream().toList();
     }
 
     public void removeSlot(EquipmentSlot slot) {
