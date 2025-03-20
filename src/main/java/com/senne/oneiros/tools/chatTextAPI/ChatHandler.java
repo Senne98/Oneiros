@@ -37,6 +37,10 @@ public class ChatHandler {
         return activeChats.get(uuid).getKey();
     }
 
+    public static String getData(UUID uuid) {
+        return activeChats.get(uuid).getData();
+    }
+
     public static boolean hasActiveChat(UUID uuid) {
         return activeChats.containsKey(uuid);
     }
