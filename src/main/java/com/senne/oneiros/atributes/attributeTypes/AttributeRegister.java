@@ -1,5 +1,6 @@
 package com.senne.oneiros.atributes.attributeTypes;
 
+import com.senne.oneiros.Oneiros;
 import org.bukkit.NamespacedKey;
 
 import java.util.ArrayList;
@@ -15,8 +16,8 @@ public class AttributeRegister {
 
     public static List<Attribute> getAttributes() {
         List<Attribute> attributeList = new ArrayList<>();
-        for (Attribute attribute : attributes) {
-            attributeList.add(attribute.copy());
+        for (int i = 0; i < attributes.size(); i++) {
+            attributeList.add(attributes.get(i).copy());
         }
         return attributeList;
     }

@@ -58,7 +58,6 @@ public class AuthorsUIEvent implements Listener {
         }
 
         if (slot == 49) {
-                player.closeInventory();
                 PackCreationUI ui = new PackCreationUI(player);
                 player.openInventory(ui.getInventory());
         }

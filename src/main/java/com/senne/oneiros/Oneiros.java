@@ -3,12 +3,13 @@ package com.senne.oneiros;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.senne.oneiros.UI.itemCreation.events.*;
 import com.senne.oneiros.UI.itemCreation.inventories.LoreUIEvent;
+import com.senne.oneiros.atributes.attributeTypes.Attribute;
+import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
+import com.senne.oneiros.atributes.attributeTypes.events.AttributeChatInputListener;
 import com.senne.oneiros.atributes.attributeTypes.events.BooleanUIEvent;
 import com.senne.oneiros.atributes.attributeTypes.events.EquipmentSlotsUIEvent;
-import com.senne.oneiros.commands.CancelCommand;
 import com.senne.oneiros.UI.itemGet.events.GetFromPackUIEvent;
 import com.senne.oneiros.UI.itemGet.events.GetItemUIEvent;
-import com.senne.oneiros.atributes.attributeTypes.events.TextUIListener;
 import com.senne.oneiros.commands.CreateItemCmd;
 import com.senne.oneiros.commands.GetItemCmd;
 import com.senne.oneiros.tools.chatTextAPI.ChatHandler;
@@ -85,8 +86,6 @@ public class Oneiros extends JavaPlugin {
             oneiros.then(Commands.literal("get").requires(source -> source.getSender().hasPermission("oneiros.oneiros.get") || source.getSender().isOp()).executes(new GetItemCmd()));
 
             commands.getDispatcher().register(oneiros);
-
-            commands.register("oneiroscancel", "Cancel the current action.", new CancelCommand());
         });
     }
 
@@ -98,11 +97,11 @@ public class Oneiros extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PackSelectUIEvent(), this);
         getServer().getPluginManager().registerEvents(new GetFromPackUIEvent(), this);
         getServer().getPluginManager().registerEvents(new GetItemUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new TextUIListener(), this);
         getServer().getPluginManager().registerEvents(new BooleanUIEvent(), this);
         getServer().getPluginManager().registerEvents(new ItemCreationChatInputListener(), this);
         getServer().getPluginManager().registerEvents(new AuthorsUIEvent(), this);
         getServer().getPluginManager().registerEvents(new PackCreationUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new AttributeChatInputListener(), this);
     }
 
     public static boolean isMocked() {

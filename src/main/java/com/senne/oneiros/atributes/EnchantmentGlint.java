@@ -1,6 +1,7 @@
 package com.senne.oneiros.atributes;
 
 import com.senne.oneiros.Oneiros;
+import com.senne.oneiros.atributes.attributeTypes.Attribute;
 import com.senne.oneiros.atributes.attributeTypes.BooleanAttribute;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 public class EnchantmentGlint extends BooleanAttribute {
 
     public EnchantmentGlint() {
-        bool = false;
         name = "Enchantment Glint";
         namespacedKey = new NamespacedKey(Oneiros.getPlugin(), "enchantmentglint");
         icon = new ItemStack(Material.ENCHANTED_BOOK);

@@ -59,15 +59,12 @@ public class PackSelectUIEvent implements Listener {
             int page = data.get(new NamespacedKey(Oneiros.getPlugin(), "page"), PersistentDataType.INTEGER);
 
             PackSelectUI ui = new PackSelectUI(player, page);
-            player.closeInventory();
             player.openInventory(ui.getInventory());
             return;
         }
 
         if (slot == 49) {
             ItemCreationUI ui = new ItemCreationUI(player);
-
-            player.closeInventory();
             player.openInventory(ui.getInventory());
             return;
         }

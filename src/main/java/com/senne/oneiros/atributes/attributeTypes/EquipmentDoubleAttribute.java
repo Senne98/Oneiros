@@ -84,8 +84,6 @@ public abstract class EquipmentDoubleAttribute extends EquipmentAttribute {
 
     @Override
     public void variableConfigUI(Player player) {
-        player.closeInventory();
-
         EquipmentSlotsUI ui = new EquipmentSlotsUI(player, namespacedKey);
         player.openInventory(ui.getInventory());
     }

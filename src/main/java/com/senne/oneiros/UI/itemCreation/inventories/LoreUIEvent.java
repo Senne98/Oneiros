@@ -61,7 +61,6 @@ public class LoreUIEvent implements Listener {
         }
 
         if (slot == 49) {
-                player.closeInventory();
                 ItemCreationUI ui = new ItemCreationUI(player);
                 player.openInventory(ui.getInventory());
         }

@@ -38,14 +38,12 @@ public class AttributeUIEvent implements Listener {
         Player player = (Player) e.getWhoClicked();
 
         if (slot == 49) {
-            player.closeInventory();
             ItemCreationUI ui = new ItemCreationUI(player);
             player.openInventory(ui.getInventory());
         }
 
         if (e.getInventory().getItem(slot).getItemMeta().getPersistentDataContainer().has(new NamespacedKey(Oneiros.getPlugin(), "page"))) {
             int page = e.getInventory().getItem(slot).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "page"), PersistentDataType.INTEGER);
-            player.closeInventory();
 
             AttributeUI ui = new AttributeUI(player, page);
             player.openInventory(ui.getInventory());
@@ -83,12 +81,9 @@ public class AttributeUIEvent implements Listener {
 
         if (attribute instanceof VariableAttribute) {
             player.closeInventory();
+
             VariableAttribute varAttribute = (VariableAttribute) attribute;
-
             item.addAttribute(varAttribute);
-
-            player.closeInventory();
-
             varAttribute.variableConfigUI(player);
 
             return;

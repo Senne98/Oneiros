@@ -28,7 +28,7 @@ public class EquipmentSlotsUI implements InventoryHolder {
     private Inventory inv;
 
     public EquipmentSlotsUI(Player player, NamespacedKey attributeKey) {
-        inv = Bukkit.createInventory(this, 54, "Armor Slots");
+        inv = Bukkit.createInventory(this, 54, "Edit Attribute");
 
         List<EquipmentSlot> keys = new ArrayList<>();
         if (ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(attributeKey) != null) {

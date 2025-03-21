@@ -25,7 +25,7 @@ public class AttackSpeed extends EquipmentIntAttribute {
 
     @Override
     public com.senne.oneiros.atributes.attributeTypes.Attribute copy() {
-        AttackDamage clone = new AttackDamage();
+        AttackSpeed clone = new AttackSpeed();
         clone.setSlots(new HashMap<>(slots));
         return clone;
     }

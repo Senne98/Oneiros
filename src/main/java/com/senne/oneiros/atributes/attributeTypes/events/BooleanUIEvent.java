@@ -40,7 +40,6 @@ public class BooleanUIEvent implements Listener {
                 attribute.setBool(true);
 
                 AttributeUI ui = new AttributeUI(player, 1);
-                player.closeInventory();
                 player.openInventory(ui.getInventory());
 
                 return;
@@ -58,7 +57,6 @@ public class BooleanUIEvent implements Listener {
                 attribute.setBool(false);
 
                 AttributeUI ui = new AttributeUI(player, 1);
-                player.closeInventory();
                 player.openInventory(ui.getInventory());
 
                 return;
@@ -66,10 +64,6 @@ public class BooleanUIEvent implements Listener {
         }
 
         AttributeUI ui = new AttributeUI(player, 1);
-        player.closeInventory();
         player.openInventory(ui.getInventory());
-
-
-
     }
 }

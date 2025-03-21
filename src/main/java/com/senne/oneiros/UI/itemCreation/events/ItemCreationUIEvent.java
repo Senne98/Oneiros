@@ -62,7 +62,6 @@ public class ItemCreationUIEvent implements Listener {
 
         if (slot == 29) {
                LoreUI ui = new LoreUI(player);
-               player.closeInventory();
                player.openInventory(ui.getInventory());
                return;
         }
@@ -86,8 +85,6 @@ public class ItemCreationUIEvent implements Listener {
                 return;
             }
 
-            player.closeInventory();
-
             AttributeUI ui = new AttributeUI(player, 1);
             player.openInventory(ui.getInventory());
         }
@@ -104,7 +101,6 @@ public class ItemCreationUIEvent implements Listener {
             }
 
             PackSelectUI ui = new PackSelectUI(player, 1);
-            player.closeInventory();
             player.openInventory(ui.getInventory());
             return;
         }
@@ -138,8 +134,6 @@ public class ItemCreationUIEvent implements Listener {
 
         Item customItem = new Item(item.getType());
         ActiveItemCreation.addActiveItem(e.getWhoClicked().getUniqueId(), customItem);
-
-        e.getWhoClicked().closeInventory();
 
         ItemCreationUI ui = new ItemCreationUI((Player) e.getWhoClicked());
         e.getWhoClicked().openInventory(ui.getInventory());

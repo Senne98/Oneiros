@@ -37,7 +37,6 @@ public abstract class BooleanAttribute implements VariableAttribute {
     @Override
     public void variableConfigUI(Player player) {
         BooleanUI ui = new BooleanUI(player, namespacedKey);
-        player.closeInventory();
         player.openInventory(ui.getInventory());
     }
 
