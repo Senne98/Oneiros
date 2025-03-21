@@ -1,6 +1,7 @@
-package com.senne.oneiros.UI.itemGet;
+package com.senne.oneiros.UI.itemGet.events;
 
 import com.senne.oneiros.Oneiros;
+import com.senne.oneiros.UI.itemGet.inventories.GetItemUI;
 import com.senne.oneiros.item.ItemRegister;
 import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import org.bukkit.NamespacedKey;

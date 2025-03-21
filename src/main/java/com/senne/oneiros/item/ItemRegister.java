@@ -2,6 +2,7 @@ package com.senne.oneiros.item;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +52,10 @@ public class ItemRegister {
 
     public static List<String> getPacks() {
         return packs.keySet().stream().toList();
+    }
+
+    public static ItemStack getPackIcon(String pack) {
+        return new ItemStack(packs.get(pack).generateIcon());
     }
 
     public static void registerPack(Pack pack) {

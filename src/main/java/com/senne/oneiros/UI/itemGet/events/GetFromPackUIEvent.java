@@ -1,6 +1,8 @@
-package com.senne.oneiros.UI.itemGet;
+package com.senne.oneiros.UI.itemGet.events;
 
 import com.senne.oneiros.Oneiros;
+import com.senne.oneiros.UI.itemGet.inventories.GetFromPackUI;
+import com.senne.oneiros.UI.itemGet.inventories.GetItemUI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

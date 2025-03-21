@@ -1,19 +1,23 @@
-package com.senne.oneiros.UI.itemCreation;
+package com.senne.oneiros.UI.itemCreation.events;
 
+import com.senne.oneiros.Oneiros;
+import com.senne.oneiros.UI.itemCreation.inventories.AttributeUI;
+import com.senne.oneiros.UI.itemCreation.inventories.ItemCreationUI;
+import com.senne.oneiros.UI.itemCreation.inventories.PackSelectUI;
+import com.senne.oneiros.UI.itemCreation.inventories.LoreUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
+import com.senne.oneiros.tools.chatTextAPI.ChatInputAPI;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class CreationUIEvent implements Listener {
+public class ItemCreationUIEvent implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
@@ -26,7 +30,7 @@ public class CreationUIEvent implements Listener {
 
     public void handleTop(InventoryClickEvent e) {
 
-        if (!(e.getInventory().getHolder() instanceof CreationUI)) {
+        if (!(e.getInventory().getHolder() instanceof ItemCreationUI)) {
             return;
         }
 
@@ -46,16 +50,12 @@ public class CreationUIEvent implements Listener {
             }
 
             player.closeInventory();
-
-            com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat.addActiveChat(player.getUniqueId(), "name");
-
             player.sendMessage(Component.text("Enter the name of the item in the chat.").decoration(TextDecoration.ITALIC, false));
             player.sendMessage(Component.text("This can be done with MiniMessage.").decoration(TextDecoration.ITALIC, false));
-            player.sendMessage(Component.text("[Cancel]")
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the name input.").color(NamedTextColor.RED)))
-                    .decoration(TextDecoration.ITALIC, false)
-                    .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/oneiroscancel name")));
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "itemname"), p -> {
+                ItemCreationUI ui = new ItemCreationUI(p);
+                p.openInventory(ui.getInventory());
+            });
 
             return;
         }
@@ -73,15 +73,10 @@ public class CreationUIEvent implements Listener {
             }
 
             player.closeInventory();
-
-            com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat.addActiveChat(player.getUniqueId(), "cmd");
-
-            player.sendMessage(Component.text("Enter the custom model data of the item in the chat.").decoration(TextDecoration.ITALIC, false));
-            player.sendMessage(Component.text("[Cancel]")
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the custom model data input.").color(NamedTextColor.RED)))
-                    .decoration(TextDecoration.ITALIC, false)
-                    .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/oneiroscancel cmd")));
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "itemcmd"), p -> {
+                ItemCreationUI ui = new ItemCreationUI(p);
+                p.openInventory(ui.getInventory());
+            }, "Enter the custom model data of the item in the chat.");
 
             return;
         }
@@ -116,7 +111,7 @@ public class CreationUIEvent implements Listener {
     }
 
     public void handleBottom(InventoryClickEvent e) {
-        if (!(e.getInventory().getHolder() instanceof CreationUI)) {
+        if (!(e.getInventory().getHolder() instanceof ItemCreationUI)) {
             return;
         }
 
@@ -124,7 +119,7 @@ public class CreationUIEvent implements Listener {
             return;
         }
 
-        if (e.getClickedInventory() instanceof CreationUI) {
+        if (e.getClickedInventory() instanceof ItemCreationUI) {
             return;
         }
 
@@ -146,7 +141,7 @@ public class CreationUIEvent implements Listener {
 
         e.getWhoClicked().closeInventory();
 
-        CreationUI ui = new CreationUI((Player) e.getWhoClicked());
+        ItemCreationUI ui = new ItemCreationUI((Player) e.getWhoClicked());
         e.getWhoClicked().openInventory(ui.getInventory());
     }
 }

@@ -1,12 +1,12 @@
-package com.senne.oneiros.UI.itemCreation;
+package com.senne.oneiros.UI.itemCreation.inventories;
 
+import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.Item;
+import com.senne.oneiros.tools.chatTextAPI.ChatInputAPI;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,22 +50,19 @@ public class LoreUIEvent implements Listener {
             }
 
             player.closeInventory();
-
-            com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat.addActiveChat(player.getUniqueId(), "lore");
-
             player.sendMessage(Component.text("Enter the next line of lore in the chat.").decoration(TextDecoration.ITALIC, false));
             player.sendMessage(Component.text("This can be done with MiniMessage.").decoration(TextDecoration.ITALIC, false));
-            player.sendMessage(Component.text("[Cancel]")
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the lore input.").color(NamedTextColor.RED)))
-                    .decoration(TextDecoration.ITALIC, false)
-                    .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/oneiroscancel lore")));
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "itemlore"), p -> {
+                LoreUI ui = new LoreUI(p);
+                p.openInventory(ui.getInventory());
+            });
+
             return;
         }
 
         if (slot == 49) {
                 player.closeInventory();
-                CreationUI ui = new CreationUI(player);
+                ItemCreationUI ui = new ItemCreationUI(player);
                 player.openInventory(ui.getInventory());
         }
     }

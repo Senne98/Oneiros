@@ -1,4 +1,4 @@
-package com.senne.oneiros.UI.itemCreation;
+package com.senne.oneiros.UI.itemCreation.inventories;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.atributes.attributeTypes.Attribute;

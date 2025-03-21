@@ -1,6 +1,6 @@
 package com.senne.oneiros.atributes.attributeTypes.events;
 
-import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
+import com.senne.oneiros.atributes.attributeTypes.ActiveChat;
 import com.senne.oneiros.atributes.attributeTypes.EquipmentDoubleAttribute;
 import com.senne.oneiros.atributes.attributeTypes.UI.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;

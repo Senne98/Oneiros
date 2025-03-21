@@ -41,4 +41,13 @@ public class ChatInputAPI {
     public static void newInput(Player p, NamespacedKey namespacedKey, Runnable onCancel, String message) {
         newInput(p, namespacedKey, "", onCancel, message, "Cancel input!");
     }
+
+    public static void newInput(Player p, NamespacedKey namespacedKey, Runnable onCancel) {
+        ChatHandler.addActiveChat(p.getUniqueId(), namespacedKey, "", onCancel);
+        p.sendMessage(Component.text("[Cancel]")
+                .hoverEvent(HoverEvent.showText(Component.text("Cancel input!").color(NamedTextColor.RED)))
+                .decoration(TextDecoration.ITALIC, false)
+                .color(NamedTextColor.RED)
+                .clickEvent(ClickEvent.runCommand("/chatinputcancel")));
+    }
 }

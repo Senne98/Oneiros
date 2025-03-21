@@ -2,6 +2,7 @@ package com.senne.oneiros.tools.chatTextAPI;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.senne.oneiros.Oneiros;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
@@ -45,7 +46,13 @@ public class ChatHandler {
         return activeChats.containsKey(uuid);
     }
 
-    public static void buildCommand(Plugin plugin) {
+    public static void setUp(Plugin plugin) {
+        // Register events
+        plugin.getServer().getPluginManager().registerEvents(new CallAsyncChatInputEvent(), plugin);
+
+
+        if (Oneiros.isMocked()) return;
+        // Register commands
         LifecycleEventManager<Plugin> manager = plugin.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
@@ -87,6 +94,9 @@ class ChatData {
     }
 
     public void runOnCancel(UUID uuid) {
-        if (onCancel != null) onCancel.run(Bukkit.getPlayer(uuid));
+        Bukkit.getScheduler().callSyncMethod(Oneiros.getPlugin(), () -> {
+            if (onCancel != null) onCancel.run(Bukkit.getPlayer(uuid));
+            return null;
+        });
     }
 }

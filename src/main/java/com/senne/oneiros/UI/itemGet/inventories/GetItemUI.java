@@ -1,4 +1,4 @@
-package com.senne.oneiros.UI.itemGet;
+package com.senne.oneiros.UI.itemGet.inventories;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.item.Item;

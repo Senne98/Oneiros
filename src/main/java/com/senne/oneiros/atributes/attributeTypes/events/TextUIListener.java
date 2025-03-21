@@ -1,7 +1,7 @@
 package com.senne.oneiros.atributes.attributeTypes.events;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
+import com.senne.oneiros.atributes.attributeTypes.ActiveChat;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;

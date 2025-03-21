@@ -32,6 +32,13 @@ public class Pack {
         this.authors = authors;
     }
 
+    public void addAuthor(String author) {
+        String[] newAuthors = new String[authors.length + 1];
+        System.arraycopy(authors, 0, newAuthors, 0, authors.length);
+        newAuthors[authors.length] = author;
+        authors = newAuthors;
+    }
+
     public int getCmd() {
         return cmd;
     }
@@ -77,15 +84,17 @@ public class Pack {
         ItemMeta meta = item.getItemMeta();
         meta.displayName(Component.text(name).decoration(TextDecoration.ITALIC, false));
 
-        String loreText = "Authors:";
-        for (int i = 0; i < authors.length; i++) {
-            loreText += " " + authors[i];
-            if (i != authors.length - 1) {
-                loreText += ",";
-            }
-        }
+        if (authors.length > 0) {
+            List<Component> lore = new ArrayList<>();
 
-        meta.lore(List.of(Component.text(loreText).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY)));
+            lore.add(Component.text("Authors:").decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY));
+
+            for (String author : authors) {
+                lore.add(Component.text(" ● " + author).decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY));
+            }
+
+            meta.lore(lore);
+        }
 
         item.setItemMeta(meta);
         return item;

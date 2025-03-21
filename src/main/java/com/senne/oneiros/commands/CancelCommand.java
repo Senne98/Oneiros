@@ -1,9 +1,9 @@
 package com.senne.oneiros.commands;
 
-import com.senne.oneiros.UI.itemCreation.AttributeUI;
-import com.senne.oneiros.UI.itemCreation.CreationUI;
-import com.senne.oneiros.UI.itemCreation.LoreUI;
-import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
+import com.senne.oneiros.UI.itemCreation.inventories.AttributeUI;
+import com.senne.oneiros.UI.itemCreation.inventories.ItemCreationUI;
+import com.senne.oneiros.UI.itemCreation.inventories.LoreUI;
+import com.senne.oneiros.atributes.attributeTypes.ActiveChat;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
@@ -25,7 +25,7 @@ public class CancelCommand implements BasicCommand {
             if (ActiveChat.getActiveChat(player.getUniqueId()).equals("name")) {
                 ActiveChat.removeActiveChat(player.getUniqueId());
 
-                CreationUI ui = new CreationUI(player);
+                ItemCreationUI ui = new ItemCreationUI(player);
                 player.openInventory(ui.getInventory());
                 return;
             }
@@ -55,7 +55,7 @@ public class CancelCommand implements BasicCommand {
             if (ActiveChat.getActiveChat(player.getUniqueId()).equals("cmd")) {
                 ActiveChat.removeActiveChat(player.getUniqueId());
 
-                CreationUI ui = new CreationUI(player);
+                ItemCreationUI ui = new ItemCreationUI(player);
                 player.openInventory(ui.getInventory());
                 return;
             }
@@ -85,7 +85,7 @@ public class CancelCommand implements BasicCommand {
             if (ActiveChat.getActiveChat(player.getUniqueId()).equals("pack")) {
                 ActiveChat.removeActiveChat(player.getUniqueId());
 
-                CreationUI ui = new CreationUI(player);
+                ItemCreationUI ui = new ItemCreationUI(player);
                 player.openInventory(ui.getInventory());
                 return;
             }
@@ -100,7 +100,7 @@ public class CancelCommand implements BasicCommand {
             if (ActiveChat.getActiveChat(player.getUniqueId()).equals("key")) {
                 ActiveChat.removeActiveChat(player.getUniqueId());
 
-                CreationUI ui = new CreationUI(player);
+                ItemCreationUI ui = new ItemCreationUI(player);
                 player.openInventory(ui.getInventory());
                 return;
             }

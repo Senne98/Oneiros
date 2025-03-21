@@ -1,10 +1,9 @@
 package com.senne.oneiros.atributes.attributeTypes.events;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.UI.itemCreation.AttributeUI;
-import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
+import com.senne.oneiros.UI.itemCreation.inventories.AttributeUI;
+import com.senne.oneiros.atributes.attributeTypes.ActiveChat;
 import com.senne.oneiros.atributes.attributeTypes.Attribute;
-import com.senne.oneiros.atributes.attributeTypes.EquipmentAttribute;
 import com.senne.oneiros.atributes.attributeTypes.EquipmentDoubleAttribute;
 import com.senne.oneiros.atributes.attributeTypes.EquipmentIntAttribute;
 import com.senne.oneiros.atributes.attributeTypes.UI.EquipmentSlotsUI;
@@ -24,7 +23,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;

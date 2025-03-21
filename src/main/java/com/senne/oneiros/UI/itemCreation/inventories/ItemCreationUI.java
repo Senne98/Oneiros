@@ -1,4 +1,4 @@
-package com.senne.oneiros.UI.itemCreation;
+package com.senne.oneiros.UI.itemCreation.inventories;
 
 import com.senne.oneiros.item.ActiveItemCreation;
 import net.kyori.adventure.text.Component;
@@ -14,11 +14,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-public class CreationUI implements InventoryHolder {
+public class ItemCreationUI implements InventoryHolder {
 
     private Inventory inv;
 
-    public CreationUI(Player player) {
+    public ItemCreationUI(Player player) {
         inv = Bukkit.createInventory(this, 54, "Create your item");
 
         ItemStack item;

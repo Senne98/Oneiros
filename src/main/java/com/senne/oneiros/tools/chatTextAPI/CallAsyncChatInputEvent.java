@@ -18,6 +18,7 @@ public class CallAsyncChatInputEvent implements Listener {
         e.setCancelled(true);
 
         AsyncChatInputEvent event = new AsyncChatInputEvent(true, p, ChatHandler.getActiveChat(uuid), e.message(), ChatHandler.getData(uuid));
+        ChatHandler.removeActiveChat(p.getUniqueId());
         event.callEvent();
     }
 }

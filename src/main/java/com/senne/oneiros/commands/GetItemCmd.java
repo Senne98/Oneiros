@@ -2,7 +2,7 @@ package com.senne.oneiros.commands;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
-import com.senne.oneiros.UI.itemGet.GetFromPackUI;
+import com.senne.oneiros.UI.itemGet.inventories.GetFromPackUI;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
 

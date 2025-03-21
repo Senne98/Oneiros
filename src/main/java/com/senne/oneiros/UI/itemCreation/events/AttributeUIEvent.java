@@ -1,6 +1,8 @@
-package com.senne.oneiros.UI.itemCreation;
+package com.senne.oneiros.UI.itemCreation.events;
 
 import com.senne.oneiros.Oneiros;
+import com.senne.oneiros.UI.itemCreation.inventories.AttributeUI;
+import com.senne.oneiros.UI.itemCreation.inventories.ItemCreationUI;
 import com.senne.oneiros.atributes.attributeTypes.Attribute;
 import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
 import com.senne.oneiros.atributes.attributeTypes.VariableAttribute;
@@ -37,7 +39,7 @@ public class AttributeUIEvent implements Listener {
 
         if (slot == 49) {
             player.closeInventory();
-            CreationUI ui = new CreationUI(player);
+            ItemCreationUI ui = new ItemCreationUI(player);
             player.openInventory(ui.getInventory());
         }
 

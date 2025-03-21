@@ -1,16 +1,13 @@
 package com.senne.oneiros;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.senne.oneiros.UI.itemCreation.events.*;
+import com.senne.oneiros.UI.itemCreation.inventories.LoreUIEvent;
 import com.senne.oneiros.atributes.attributeTypes.events.BooleanUIEvent;
 import com.senne.oneiros.atributes.attributeTypes.events.EquipmentSlotsUIEvent;
 import com.senne.oneiros.commands.CancelCommand;
-import com.senne.oneiros.UI.itemCreation.AttributeUIEvent;
-import com.senne.oneiros.UI.itemCreation.CreationUIEvent;
-import com.senne.oneiros.UI.itemCreation.LoreUIEvent;
-import com.senne.oneiros.UI.itemCreation.PackSelectUIEvent;
-import com.senne.oneiros.UI.itemCreation.chatUI.*;
-import com.senne.oneiros.UI.itemGet.GetFromPackUIEvent;
-import com.senne.oneiros.UI.itemGet.GetItemUIEvent;
+import com.senne.oneiros.UI.itemGet.events.GetFromPackUIEvent;
+import com.senne.oneiros.UI.itemGet.events.GetItemUIEvent;
 import com.senne.oneiros.atributes.attributeTypes.events.TextUIListener;
 import com.senne.oneiros.commands.CreateItemCmd;
 import com.senne.oneiros.commands.GetItemCmd;
@@ -53,7 +50,7 @@ public class Oneiros extends JavaPlugin {
         // Registering the commands
         logger.info("[Oneiros] Loading commands ...");
         if (!mocked) buildCommands();
-        if (!mocked) ChatHandler.buildCommand(plugin);
+        ChatHandler.setUp(plugin);
 
         // Registering the events
         logger.info("[Oneiros] Loading events ...");
@@ -94,20 +91,18 @@ public class Oneiros extends JavaPlugin {
     }
 
     private void registerEvents() {
-        getServer().getPluginManager().registerEvents(new CreationUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new NameTextUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new ItemCreationUIEvent(), this);
         getServer().getPluginManager().registerEvents(new LoreUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new LoreTextUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new CmdTextUIEvent(), this);
         getServer().getPluginManager().registerEvents(new AttributeUIEvent(), this);
         getServer().getPluginManager().registerEvents(new EquipmentSlotsUIEvent(), this);
         getServer().getPluginManager().registerEvents(new PackSelectUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new PackCreateTextUIEvent(), this);
         getServer().getPluginManager().registerEvents(new GetFromPackUIEvent(), this);
         getServer().getPluginManager().registerEvents(new GetItemUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new KeyCreateTextUIEvent(), this);
         getServer().getPluginManager().registerEvents(new TextUIListener(), this);
         getServer().getPluginManager().registerEvents(new BooleanUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new ItemCreationChatInputListener(), this);
+        getServer().getPluginManager().registerEvents(new AuthorsUIEvent(), this);
+        getServer().getPluginManager().registerEvents(new PackCreationUIEvent(), this);
     }
 
     public static boolean isMocked() {

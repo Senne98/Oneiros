@@ -1,7 +1,7 @@
 package com.senne.oneiros.atributes.attributeTypes.events;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.UI.itemCreation.AttributeUI;
+import com.senne.oneiros.UI.itemCreation.inventories.AttributeUI;
 import com.senne.oneiros.atributes.attributeTypes.BooleanAttribute;
 import com.senne.oneiros.atributes.attributeTypes.UI.BooleanUI;
 import com.senne.oneiros.item.ActiveItemCreation;

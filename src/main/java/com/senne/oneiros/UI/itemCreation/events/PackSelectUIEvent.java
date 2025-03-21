@@ -1,13 +1,10 @@
-package com.senne.oneiros.UI.itemCreation;
+package com.senne.oneiros.UI.itemCreation.events;
 
 import com.senne.oneiros.Oneiros;
-import com.senne.oneiros.UI.itemCreation.chatUI.ActiveChat;
+import com.senne.oneiros.UI.itemCreation.inventories.ItemCreationUI;
+import com.senne.oneiros.UI.itemCreation.inventories.PackSelectUI;
 import com.senne.oneiros.item.ActiveItemCreation;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import com.senne.oneiros.tools.chatTextAPI.ChatInputAPI;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,9 +24,8 @@ public class PackSelectUIEvent implements Listener {
 
         e.setCancelled(true);
 
-        if (e.getRawSlot() > 53) {
-            return;
-        }
+        if (e.getClickedInventory() == null) return;
+        if (e.getRawSlot() > 53 || e.getRawSlot() < 0) return;
 
         int slot = e.getSlot();
         ItemStack item = e.getInventory().getItem(slot);
@@ -38,35 +34,23 @@ public class PackSelectUIEvent implements Listener {
 
         if (data.has(new NamespacedKey(Oneiros.getPlugin(), "addPack"))) {
             player.closeInventory();
-
-            ActiveChat.addActiveChat(player.getUniqueId(), "pack");
-
-            player.sendMessage(Component.text("Enter the name of the pack in the chat.").decoration(TextDecoration.ITALIC, false));
-            player.sendMessage(Component.text("[Cancel]")
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the name input.").color(NamedTextColor.RED)))
-                    .decoration(TextDecoration.ITALIC, false)
-                    .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/oneiroscancel pack")));
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "packnamefirst"), p -> {
+                PackSelectUI packSelectUI = new PackSelectUI(p, 1);
+                p.openInventory(packSelectUI.getInventory());
+            }, "Enter the name of the pack in the chat.");
 
             return;
         }
 
         if (data.has(new NamespacedKey(Oneiros.getPlugin(), "pack"))) {
-            player.closeInventory();
-
             String pack = data.get(new NamespacedKey(Oneiros.getPlugin(), "pack"), PersistentDataType.STRING);
             ActiveItemCreation.getActiveItem(player.getUniqueId()).setNamespace(pack);
 
-            player.sendMessage(Component.text("Enter the key of the item in the chat.").decoration(TextDecoration.ITALIC, false));
-            player.sendMessage(Component.text("[Cancel]")
-                    .hoverEvent(HoverEvent.showText(Component.text("Click to cancel the key input.").color(NamedTextColor.RED)))
-                    .decoration(TextDecoration.ITALIC, false)
-                    .color(NamedTextColor.RED)
-                    .clickEvent(ClickEvent.runCommand("/oneiroscancel key")));
-
-            ActiveChat.addActiveChat(player.getUniqueId(), "key");
-
-
+            player.closeInventory();
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "itemkey"), p -> {
+                ItemCreationUI ui = new ItemCreationUI(p);
+                p.openInventory(ui.getInventory());
+            }, "Enter the key of the item in the chat.");
 
             return;
         }
@@ -81,7 +65,7 @@ public class PackSelectUIEvent implements Listener {
         }
 
         if (slot == 49) {
-            CreationUI ui = new CreationUI(player);
+            ItemCreationUI ui = new ItemCreationUI(player);
 
             player.closeInventory();
             player.openInventory(ui.getInventory());

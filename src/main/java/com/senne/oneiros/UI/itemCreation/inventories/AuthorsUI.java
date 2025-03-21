@@ -1,6 +1,6 @@
-package com.senne.oneiros.UI.itemCreation;
+package com.senne.oneiros.UI.itemCreation.inventories;
 
-import com.senne.oneiros.item.ActiveItemCreation;
+import com.senne.oneiros.item.ActivePackCreation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -15,12 +15,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LoreUI implements InventoryHolder {
+public class AuthorsUI implements InventoryHolder {
 
     private Inventory inv;
 
-    public LoreUI(Player player) {
-        this.inv = Bukkit.createInventory(this, 54, "Edit Lore");
+    public AuthorsUI(Player player) {
+        this.inv = Bukkit.createInventory(this, 54, "Edit Authors");
 
         ItemStack item;
         ItemMeta meta;
@@ -37,21 +37,21 @@ public class LoreUI implements InventoryHolder {
             inv.setItem(i, neutral);
         }
 
-        item = ActiveItemCreation.getActiveItem(player.getUniqueId()).createItem((byte) 1);
+        item = ActivePackCreation.getActivePack(player.getUniqueId()).generateIcon();
         inv.setItem(13, item);
 
         item = new ItemStack(Material.RED_DYE);
         meta = item.getItemMeta();
-        meta.displayName(Component.text("Remove last line").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        lore = List.of(Component.text("■ Click to remove line!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        meta.displayName(Component.text("Remove last author").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        lore = List.of(Component.text("■ Click to remove author!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(29, item);
 
         item = new ItemStack(Material.GREEN_DYE);
         meta = item.getItemMeta();
-        meta.displayName(Component.text("Add line").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-        lore = List.of(Component.text("■ Click to add line!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+        meta.displayName(Component.text("Add author").color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
+        lore = List.of(Component.text("■ Click to add author!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
         meta.lore(lore);
         item.setItemMeta(meta);
         inv.setItem(33, item);
