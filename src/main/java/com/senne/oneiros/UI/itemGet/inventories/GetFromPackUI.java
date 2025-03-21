@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetFromPackUI implements InventoryHolder {
@@ -45,11 +46,11 @@ public class GetFromPackUI implements InventoryHolder {
         int amount = Integer.min(packs.size() - start, 28);
 
         for (int i = start; i < start + amount; i++) {
-            item = new ItemStack(Material.CHEST);
+            item = ItemRegister.getPackIcon(packs.get(i));
             meta = item.getItemMeta();
-            meta.displayName(Component.text(packs.get(i)).color(NamedTextColor.WHITE).decoration(TextDecoration.ITALIC, false));
-
-            lore = List.of(Component.text("■ Click to select!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
+            lore = meta.lore();
+            if (lore == null) lore = new ArrayList<>();
+            lore.add(Component.text("■ Click to select!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false));
             meta.getPersistentDataContainer().set(new NamespacedKey(Oneiros.getPlugin(), "pack"), PersistentDataType.STRING, packs.get(i));
 
             int slot = 10 + i - start;

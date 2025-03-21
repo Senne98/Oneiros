@@ -160,7 +160,7 @@ public class ItemCreationChatInputListener implements Listener {
 
     private static void itemLore(String input, Player player) {
         List<Component> lore = ActiveItemCreation.getActiveItem(player.getUniqueId()).getLore();
-        lore.add(Component.text().decoration(TextDecoration.ITALIC, false).color(NamedTextColor.WHITE).append(MiniMessage.miniMessage().deserialize(input).asComponent()).asComponent());
+        lore.add(Component.text().decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY).append(MiniMessage.miniMessage().deserialize(input).asComponent()).asComponent());
         ActiveItemCreation.getActiveItem(player.getUniqueId()).setLore(lore);
         openInvSync(player, new LoreUI(player).getInventory());
     }
