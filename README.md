@@ -16,4 +16,4 @@ A plugin for creating custom items fully in-game.
 
 ### Sharing packs
 
-Packs can be found inside the plugins folder: ```/path/to/server/plugins/packs```. The item packs are the ```.pack``` files, and can be shared.
+Packs can be found inside the plugins folder: ```/path/to/server/plugins/packs```. The item packs are the ```.pack``` files and can be shared.
