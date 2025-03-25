@@ -17,6 +17,8 @@ import com.senne.oneiros.UI.itemGet.events.GetItemUIEvent;
 import com.senne.oneiros.commands.CreateItemCmd;
 import com.senne.oneiros.commands.GetItemCmd;
 import com.senne.oneiros.commands.GiveItemCmd;
+import com.senne.oneiros.item.ItemRegister;
+import com.senne.oneiros.item.Pack;
 import com.senne.oneiros.tools.argumentTypes.ItemKeyArgumentType;
 import com.senne.oneiros.tools.chatTextAPI.ChatHandler;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -26,10 +28,15 @@ import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySele
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.util.logging.Logger;
+
+import static com.senne.oneiros.storage.Data.load;
+import static com.senne.oneiros.storage.Data.save;
 
 public class Oneiros extends JavaPlugin {
 
@@ -41,7 +48,7 @@ public class Oneiros extends JavaPlugin {
     public void onEnable() {
 
         // start init
-        logger = getServer().getLogger();
+        logger = getLogger();
         logger.info("[Oneiros] Starting Oneiros plugin...");
 
         // Check if the plugin is running in a test environment
@@ -51,7 +58,6 @@ public class Oneiros extends JavaPlugin {
             mocked = true;
         } catch (ClassNotFoundException e) {
             mocked = false;
-
         }
 
         // Plugin startup logic
@@ -70,6 +76,10 @@ public class Oneiros extends JavaPlugin {
         logger.info("[Oneiros] Registering attributes ...");
         Register.registerAttributes();
 
+        // Loading packs
+        logger.info("[Oneiros] Loading packs ...");
+        load();
+
         // end init
         logger.info("[Oneiros] Initialization finished");
     }
@@ -79,6 +89,21 @@ public class Oneiros extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        logger.info(getDataFolder().getAbsolutePath());
+
+        logger.info("[Oneiros] Saving packs ...");
+        ItemRegister.getPacks().forEach(s -> {
+            Pack pack = ItemRegister.getPack(s);
+            if (!pack.isSaved()) {
+                try {
+                    save(s);
+                } catch (IOException e) {
+                    logger.warning("[Oneiros] Failed to save pack " + s);
+                    logger.throwing("Oneiros", "onDisable", e);
+                }
+            }
+        });
+
     }
 
     public static Plugin getPlugin() {

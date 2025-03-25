@@ -1,12 +1,17 @@
 package com.senne.oneiros.item;
 
+import com.senne.oneiros.Oneiros;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Warning;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.senne.oneiros.storage.Data.save;
 
 public class ItemRegister {
 
@@ -18,6 +23,14 @@ public class ItemRegister {
             throw new IllegalArgumentException("Pack not registered");
         }
         packs.get(pack).addItem(item);
+
+        try {
+            save(pack);
+            packs.get(pack).setSaved(true);
+        } catch (IOException e) {
+            packs.get(pack).setSaved(true);
+            Oneiros.getPlugin().getLogger().warning("[Oneiros] Failed to save pack " + pack);
+        }
     }
 
     public static Item getItem(NamespacedKey key) {
@@ -46,8 +59,12 @@ public class ItemRegister {
         return items;
     }
 
-    public static List<Item> getPack(String pack) {
+    public static List<Item> getPackContent(String pack) {
         return packs.get(pack).getItems();
+    }
+
+    public static Pack getPack(String pack) {
+        return packs.get(pack);
     }
 
     public static List<String> getPacks() {
@@ -59,6 +76,19 @@ public class ItemRegister {
     }
 
     public static void registerPack(Pack pack) {
+        packs.put(pack.getName(), pack);
+
+        try {
+            save(pack.getName());
+            packs.get(pack.getName()).setSaved(true);
+        } catch (IOException e) {
+            packs.get(pack.getName()).setSaved(true);
+            Oneiros.getPlugin().getLogger().warning("[Oneiros] Failed to save pack " + pack.getName());
+        }
+    }
+
+    @Warning(reason = "This method should only be used for loading packs from file")
+    public static void registerPackNoSave(Pack pack) {
         packs.put(pack.getName(), pack);
     }
 

@@ -1,12 +1,10 @@
 package com.senne.oneiros.commands;
 
 import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.senne.oneiros.item.Item;
 import com.senne.oneiros.item.ItemRegister;
-import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
 import net.kyori.adventure.text.Component;
@@ -39,7 +37,7 @@ public class GiveItemCmd  implements Command {
         }
 
         NamespacedKey namespacedKey = (NamespacedKey) cmd.getArgument("item", NamespacedKey.class);
-        if (!ItemRegister.getPacks().contains(namespacedKey.getNamespace()) || !ItemRegister.getPack(namespacedKey.getNamespace()).stream().anyMatch(item -> item.getNamespacedKey().equals(namespacedKey))) {
+        if (!ItemRegister.getPacks().contains(namespacedKey.getNamespace()) || !ItemRegister.getPackContent(namespacedKey.getNamespace()).stream().anyMatch(item -> item.getNamespacedKey().equals(namespacedKey))) {
             stack.getSender().sendMessage(Component.text("Item " + namespacedKey.asString() + " does not exist.", NamedTextColor.RED));
             return 0;
         }

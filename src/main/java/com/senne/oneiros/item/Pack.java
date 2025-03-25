@@ -17,6 +17,7 @@ public class Pack {
     private Material icon;
     private int cmd;
     private List<Item> items = new ArrayList<>();
+    private boolean saved = false;
 
     public Pack(String name) {
         this.name = name;
@@ -110,5 +111,13 @@ public class Pack {
         if (!getName().equals(pack.getName())) return false;
         if (!getIcon().equals(pack.getIcon())) return false;
         return getItems().equals(pack.getItems());
+    }
+
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
     }
 }

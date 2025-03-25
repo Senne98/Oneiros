@@ -42,7 +42,7 @@ public class GetItemUI implements InventoryHolder {
 
         // 7 * 4 = 28 items per page
         int start = (page - 1) * 28;
-        List<Item> items = ItemRegister.getPack(pack);
+        List<Item> items = ItemRegister.getPackContent(pack);
         int amount = Integer.min(items.size() - start, 28);
 
         for (int i = start; i < start + amount; i++) {

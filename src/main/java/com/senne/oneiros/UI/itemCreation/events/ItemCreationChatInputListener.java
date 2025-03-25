@@ -114,7 +114,7 @@ public class ItemCreationChatInputListener implements Listener {
             return;
         }
 
-        if (ItemUtils.containsNamespacedKey(ItemRegister.getPack(ActiveItemCreation.getActiveItem(player.getUniqueId()).getNamespace()), new NamespacedKey(ActiveItemCreation.getActiveItem(player.getUniqueId()).getNamespace(), input))) {
+        if (ItemUtils.containsNamespacedKey(ItemRegister.getPackContent(ActiveItemCreation.getActiveItem(player.getUniqueId()).getNamespace()), new NamespacedKey(ActiveItemCreation.getActiveItem(player.getUniqueId()).getNamespace(), input))) {
             ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "itemkey"), p -> {
                 ItemCreationUI ui = new ItemCreationUI(p);
                 p.openInventory(ui.getInventory());

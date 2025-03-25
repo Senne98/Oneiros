@@ -44,12 +44,12 @@ public class TestItemRegister {
         Assertions.assertTrue(items.contains(item2));
         Assertions.assertTrue(items.contains(item3));
 
-        List<Item> pack = ItemRegister.getPack("pack");
+        List<Item> pack = ItemRegister.getPackContent("pack");
         Assertions.assertEquals(2, pack.size());
         Assertions.assertTrue(pack.contains(item1));
         Assertions.assertTrue(pack.contains(item2));
 
-        List<Item> pock = ItemRegister.getPack("pock");
+        List<Item> pock = ItemRegister.getPackContent("pock");
         Assertions.assertEquals(1, pock.size());
         Assertions.assertTrue(pock.contains(item3));
     }
