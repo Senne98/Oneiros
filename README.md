@@ -1,4 +1,6 @@
-# Oneiros
+<div align="center">
+  <h1>Oneiros</h1>
+</div>
 
 A plugin for creating custom items fully in-game.
 
@@ -17,3 +19,11 @@ A plugin for creating custom items fully in-game.
 ### Sharing packs
 
 Packs can be found inside the plugins folder: ```/path/to/server/plugins/packs```. The item packs are the ```.pack``` files and can be shared.
+
+### Partner
+
+<center>
+  <a href="https://billing.lilypad.gg/aff.php?aff=89">
+    <img src="https://github.com/user-attachments/assets/c9306029-476b-45d0-b8bb-4228b7ccc797" alt="Lilypad">
+  </a>
+</center>
