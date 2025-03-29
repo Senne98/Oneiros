@@ -135,10 +135,8 @@ public class Oneiros extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GetFromPackUIEvent(), this);
         getServer().getPluginManager().registerEvents(new GetItemUIEvent(), this);
         getServer().getPluginManager().registerEvents(new BooleanUIEvent(), this);
-        //getServer().getPluginManager().registerEvents(new ItemCreationChatInputListener(), this);
         getServer().getPluginManager().registerEvents(new AuthorsUIEvent(), this);
         getServer().getPluginManager().registerEvents(new PackCreationUIEvent(), this);
-        //getServer().getPluginManager().registerEvents(new AttributeChatInputListener(), this);
     }
 
     public static boolean isMocked() {
