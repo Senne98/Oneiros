@@ -11,6 +11,9 @@ A plugin for creating custom items fully in-game.
 > [!IMPORTANT]
 > This project is still in early alpha and might not function as expected.
 
+> [!WARNING]
+> Packs loaded or created in alpha version are not guaranteed to work in new versions!
+
 ### Commands
 
  * ```/oneiros create```: Open the UI to create a custom item.
