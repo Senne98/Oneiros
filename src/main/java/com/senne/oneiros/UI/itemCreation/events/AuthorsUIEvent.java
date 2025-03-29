@@ -6,7 +6,10 @@ import com.senne.oneiros.UI.itemCreation.inventories.PackCreationUI;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.item.ActivePackCreation;
 import com.senne.oneiros.item.Pack;
+import com.senne.oneiros.tools.chatTextAPI.AsyncRunnableSend;
 import com.senne.oneiros.tools.chatTextAPI.ChatInputAPI;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +18,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.Arrays;
 import java.util.UUID;
+
+import static com.senne.oneiros.tools.utils.InventoryUtils.openInvSync;
 
 public class AuthorsUIEvent implements Listener {
 
@@ -49,10 +54,15 @@ public class AuthorsUIEvent implements Listener {
             }
 
             player.closeInventory();
-            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "packauthor"), p -> {
-                AuthorsUI ui = new AuthorsUI(p);
-                p.openInventory(ui.getInventory());
-            }, "Enter the next author in the chat.");
+
+
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "packauthor"),
+                    p -> openInvSync(p, new AuthorsUI(p).getInventory()),
+                    (player1, namespacedKey, input, data) -> {
+                        ActivePackCreation.getActivePack(player1.getUniqueId()).addAuthor(PlainTextComponentSerializer.plainText().serialize(input));
+                        openInvSync(player1, new AuthorsUI(player1).getInventory());
+                    },
+                    "Enter the next author in the chat.");
 
             return;
         }

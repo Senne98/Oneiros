@@ -8,5 +8,6 @@ public class MyMockServer extends ServerMock {
 
     @Override
     public void sendMessage(final @NotNull Component message) {
+        getLogger().info(message.toString());
     }
 }

@@ -18,20 +18,38 @@ import static com.senne.oneiros.tools.utils.ByteUtils.merge;
 import static com.senne.oneiros.tools.utils.SerializationUtils.deserialize;
 import static com.senne.oneiros.tools.utils.SerializationUtils.serialize;
 
-public abstract class EquipmentIntAttribute extends EquipmentAttribute {
+public abstract class EquipmentAmountAttribute implements VariableAttribute {
 
-    protected HashMap<EquipmentSlot, Integer> slots = new HashMap<>();
+    protected HashMap<EquipmentSlot, Double> slots = new HashMap<>();
 
-    protected int min;
-    protected int max;
+    protected double min;
+    protected double max;
     protected Attribute attribute;
+    protected NamespacedKey namespacedKey;
+    protected ItemStack icon;
+    protected String name;
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public NamespacedKey getKey() {
+        return namespacedKey;
+    }
+
+    @Override
+    public ItemStack getIcon() {
+        return icon;
+    }
 
 
-    public int getAmount(EquipmentSlot slot) {
+    public double getAmount(EquipmentSlot slot) {
         return slots.get(slot);
     }
 
-    public void setAmount(EquipmentSlot slot, int amount) {
+    public void setAmount(EquipmentSlot slot, double amount) {
         slots.put(slot, amount);
     }
 
@@ -43,7 +61,7 @@ public abstract class EquipmentIntAttribute extends EquipmentAttribute {
         slots.remove(slot);
     }
 
-    public void setSlots(HashMap<EquipmentSlot, Integer> slots) {
+    public void setSlots(HashMap<EquipmentSlot, Double> slots) {
         if (slots == null) throw new IllegalArgumentException("slots cannot be null");
         if (slots.keySet().stream().anyMatch(s -> s == null)) throw new IllegalArgumentException("slots cannot contain null values");
 
@@ -54,14 +72,7 @@ public abstract class EquipmentIntAttribute extends EquipmentAttribute {
     public ItemStack applyAttribute(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         for (EquipmentSlot slot : slots.keySet()) {
-            meta.addAttributeModifier(attribute,
-                    new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(),
-                            name.toLowerCase().replace(" ", "_") + "_" + slot.name()),
-                            slots.get(slot),
-                            AttributeModifier.Operation.ADD_NUMBER,
-                            slot.getGroup()
-                    )
-            );
+            meta.addAttributeModifier(attribute, new AttributeModifier(new NamespacedKey(Oneiros.getPlugin(),  name.toLowerCase().replace(" ", "_") + "_" + slot.name()), slots.get(slot), AttributeModifier.Operation.ADD_NUMBER, slot.getGroup()));
         }
         item.setItemMeta(meta);
         return item;
@@ -70,11 +81,11 @@ public abstract class EquipmentIntAttribute extends EquipmentAttribute {
     @Override
     public void importVariables(byte[] variables) {
         ByteBuffer buffer = ByteBuffer.wrap(variables);
-        while (buffer.hasRemaining()) {
+        for (int i = 0; i < variables.length/9; i++) {
             EquipmentSlot slot = EquipmentSlot.values()[buffer.get()];
-            byte[] processing = new byte[4];
+            byte[] processing = new byte[8];
             buffer.get(processing);
-            int amount = deserialize(processing, Integer.class);
+            double amount = deserialize(processing, Double.class);
             slots.put(slot, amount);
         }
     }
@@ -95,23 +106,26 @@ public abstract class EquipmentIntAttribute extends EquipmentAttribute {
         player.openInventory(ui.getInventory());
     }
 
-    public int getMin() {
+    public double getMin() {
         return min;
     }
 
-    public int getMax() {
+    public double getMax() {
         return max;
     }
 
     @Override
     public boolean equals(Object j) {
-        if (!(j instanceof EquipmentIntAttribute)) return false;
-        EquipmentIntAttribute attribute = (EquipmentIntAttribute) j;
+        if (!(j instanceof EquipmentAmountAttribute)) return false;
+
+        EquipmentAmountAttribute attribute = (EquipmentAmountAttribute) j;
+        if (!attribute.name.equals(this.name)) return false;
+        if (!attribute.icon.equals(this.icon)) return false;
+        if (!attribute.namespacedKey.equals(this.namespacedKey)) return false;
         if (!slots.equals(attribute.slots)) return false;
         if (min != attribute.min) return false;
         if (max != attribute.max) return false;
 
         return super.equals(j);
     }
-
 }

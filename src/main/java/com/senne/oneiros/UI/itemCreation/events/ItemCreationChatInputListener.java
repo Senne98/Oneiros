@@ -7,6 +7,7 @@ import com.senne.oneiros.item.ActivePackCreation;
 import com.senne.oneiros.item.ItemRegister;
 import com.senne.oneiros.item.Pack;
 import com.senne.oneiros.tools.chatTextAPI.AsyncChatInputEvent;
+import com.senne.oneiros.tools.chatTextAPI.AsyncRunnableSend;
 import com.senne.oneiros.tools.chatTextAPI.ChatInputAPI;
 import com.senne.oneiros.tools.utils.IntUtils;
 import com.senne.oneiros.tools.utils.ItemUtils;
@@ -30,7 +31,7 @@ public class ItemCreationChatInputListener implements Listener {
 
     @EventHandler
     public void onChat(AsyncChatInputEvent e) {
-        NamespacedKey key = e.namespacedKey();
+        /*NamespacedKey key = e.namespacedKey();
 
         if (!key.getNamespace().equals("oneiros")) return;
 
@@ -68,28 +69,39 @@ public class ItemCreationChatInputListener implements Listener {
         if (key.getKey().equals("itemlore")) {
             itemLore(input, player);
             return;
-        }
+        }*/
 
 
     }
 
-    private static void packName(String input, Player player) {
+    /*private static void packName(String input, Player player) {
         UUID uuid = player.getUniqueId();
         if (StringUtils.containsOnlyLetters(input) && !input.isEmpty()) ActivePackCreation.getActivePack(uuid).setName(input);
         openInvSync(player, new PackCreationUI(player).getInventory());
     }
 
     private static void packCMD(String input, Player player) {
-        if (!IntUtils.isInt(input) || Integer.parseInt(input) < 0 || Integer.parseInt(input) > 9999999) {
-            ChatInputAPI.newInput(player, new NamespacedKey("oneiros", "packcmd"), player1 -> {
+        /*if (!IntUtils.isInt(input) || Integer.parseInt(input) < 0 || Integer.parseInt(input) > 9999999) {
+
+            ChatInputAPI.newInput(player, new NamespacedKey("oneiros", "packcmd"),
+                    player1 -> openInvSync(player1, new PackCreationUI(player1).getInventory()),
+                    new AsyncRunnableSend() {
+                        @Override
+                        public void run(Player player, NamespacedKey namespacedKey, Component input, String data) {
+                            this();
+                        }
+                    }, "Please enter a number between 0 and 9999999.");
+
+
+            /*ChatInputAPI.newInput(player, new NamespacedKey("oneiros", "packcmd"), player1 -> {
                 PackCreationUI ui1 = new PackCreationUI(player1);
                 player1.openInventory(ui1.getInventory());
-            }, "Please enter a number between 0 and 9999999.");
-        }
+            }, "Please enter a number between 0 and 9999999.");*/
+        /*}
 
         ActivePackCreation.getActivePack(player.getUniqueId()).setCmd(Integer.parseInt(input));
-        openInvSync(player, new PackCreationUI(player).getInventory());
-    }
+        openInvSync(player, new PackCreationUI(player).getInventory());*/
+    /*}
 
     private static void packAuthor(String input, Player player) {
         ActivePackCreation.getActivePack(player.getUniqueId()).addAuthor(input);
@@ -163,5 +175,5 @@ public class ItemCreationChatInputListener implements Listener {
         lore.add(Component.text().decoration(TextDecoration.ITALIC, false).color(NamedTextColor.GRAY).append(MiniMessage.miniMessage().deserialize(input).asComponent()).asComponent());
         ActiveItemCreation.getActiveItem(player.getUniqueId()).setLore(lore);
         openInvSync(player, new LoreUI(player).getInventory());
-    }
+    }*/
 }

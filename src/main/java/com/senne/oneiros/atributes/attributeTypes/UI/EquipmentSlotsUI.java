@@ -2,8 +2,7 @@ package com.senne.oneiros.atributes.attributeTypes.UI;
 
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.atributes.attributeTypes.Attribute;
-import com.senne.oneiros.atributes.attributeTypes.EquipmentDoubleAttribute;
-import com.senne.oneiros.atributes.attributeTypes.EquipmentIntAttribute;
+import com.senne.oneiros.atributes.attributeTypes.EquipmentAmountAttribute;
 import com.senne.oneiros.item.ActiveItemCreation;
 import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
@@ -18,7 +17,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +31,8 @@ public class EquipmentSlotsUI implements InventoryHolder {
         List<EquipmentSlot> keys = new ArrayList<>();
         if (ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(attributeKey) != null) {
             Attribute attribute = ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(attributeKey);
-            if (attribute instanceof EquipmentIntAttribute) {
-                keys = ((EquipmentIntAttribute) attribute).getSlots();
-            } else if (attribute instanceof EquipmentDoubleAttribute) {
-                keys = ((EquipmentDoubleAttribute) attribute).getSlots();
+            if (attribute instanceof EquipmentAmountAttribute eqAmAttribute) {
+                keys = eqAmAttribute.getSlots();
             }
         }
 

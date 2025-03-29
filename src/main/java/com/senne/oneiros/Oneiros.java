@@ -1,15 +1,9 @@
 package com.senne.oneiros;
 
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.senne.oneiros.UI.itemCreation.events.*;
-import com.senne.oneiros.UI.itemCreation.inventories.LoreUIEvent;
-import com.senne.oneiros.atributes.attributeTypes.Attribute;
-import com.senne.oneiros.atributes.attributeTypes.AttributeRegister;
-import com.senne.oneiros.atributes.attributeTypes.events.AttributeChatInputListener;
+import com.senne.oneiros.UI.itemCreation.events.LoreUIEvent;
 import com.senne.oneiros.atributes.attributeTypes.events.BooleanUIEvent;
 import com.senne.oneiros.atributes.attributeTypes.events.EquipmentSlotsUIEvent;
 import com.senne.oneiros.UI.itemGet.events.GetFromPackUIEvent;
@@ -24,11 +18,8 @@ import com.senne.oneiros.tools.chatTextAPI.ChatHandler;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.EntitySelectorArgumentResolver;
-import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -118,7 +109,7 @@ public class Oneiros extends JavaPlugin {
             LiteralArgumentBuilder<CommandSourceStack> oneiros = Commands.literal("oneiros");
             oneiros.then(Commands.literal("create").requires(source -> source.getSender().hasPermission("oneiros.oneiros.create") || source.getSender().isOp()).executes(new CreateItemCmd()));
             oneiros.then(Commands.literal("get").requires(source -> source.getSender().hasPermission("oneiros.oneiros.get") || source.getSender().isOp()).executes(new GetItemCmd()));
-            oneiros.then(Commands.literal("give").requires(source -> source.getSender().hasPermission("oneiros.oneiros.get") || source.getSender().isOp())
+            oneiros.then(Commands.literal("give").requires(source -> source.getSender().hasPermission("oneiros.oneiros.give") || source.getSender().isOp())
                     .then(Commands.argument("entity", ArgumentTypes.entities())
                             .then(Commands.argument("item", new ItemKeyArgumentType())
                                     .then(Commands.argument("amount", IntegerArgumentType.integer(1)).executes(new GiveItemCmd())))));
@@ -126,9 +117,7 @@ public class Oneiros extends JavaPlugin {
             commands.getDispatcher().register(oneiros);
 
             oneiros = Commands.literal("oneiros");
-            oneiros.then(Commands.literal("create").requires(source -> source.getSender().hasPermission("oneiros.oneiros.create") || source.getSender().isOp()).executes(new CreateItemCmd()));
-            oneiros.then(Commands.literal("get").requires(source -> source.getSender().hasPermission("oneiros.oneiros.get") || source.getSender().isOp()).executes(new GetItemCmd()));
-            oneiros.then(Commands.literal("give").requires(source -> source.getSender().hasPermission("oneiros.oneiros.get") || source.getSender().isOp())
+            oneiros.then(Commands.literal("give").requires(source -> source.getSender().hasPermission("oneiros.oneiros.give") || source.getSender().isOp())
                     .then(Commands.argument("entity", ArgumentTypes.entities())
                             .then(Commands.argument("item", new ItemKeyArgumentType())
                                     .executes(new GiveItemCmd()))));
@@ -146,10 +135,10 @@ public class Oneiros extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GetFromPackUIEvent(), this);
         getServer().getPluginManager().registerEvents(new GetItemUIEvent(), this);
         getServer().getPluginManager().registerEvents(new BooleanUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new ItemCreationChatInputListener(), this);
+        //getServer().getPluginManager().registerEvents(new ItemCreationChatInputListener(), this);
         getServer().getPluginManager().registerEvents(new AuthorsUIEvent(), this);
         getServer().getPluginManager().registerEvents(new PackCreationUIEvent(), this);
-        getServer().getPluginManager().registerEvents(new AttributeChatInputListener(), this);
+        //getServer().getPluginManager().registerEvents(new AttributeChatInputListener(), this);
     }
 
     public static boolean isMocked() {

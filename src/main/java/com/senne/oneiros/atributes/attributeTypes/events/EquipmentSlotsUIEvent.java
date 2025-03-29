@@ -3,15 +3,16 @@ package com.senne.oneiros.atributes.attributeTypes.events;
 import com.senne.oneiros.Oneiros;
 import com.senne.oneiros.UI.itemCreation.inventories.AttributeUI;
 import com.senne.oneiros.atributes.attributeTypes.Attribute;
-import com.senne.oneiros.atributes.attributeTypes.EquipmentDoubleAttribute;
-import com.senne.oneiros.atributes.attributeTypes.EquipmentIntAttribute;
+import com.senne.oneiros.atributes.attributeTypes.EquipmentAmountAttribute;
 import com.senne.oneiros.atributes.attributeTypes.UI.EquipmentSlotsUI;
 import com.senne.oneiros.item.ActiveItemCreation;
+import com.senne.oneiros.tools.chatTextAPI.AsyncRunnableSend;
 import com.senne.oneiros.tools.chatTextAPI.ChatInputAPI;
 import com.senne.oneiros.tools.dataTypes.NamespacedKeyDataType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,6 +26,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import static com.senne.oneiros.tools.utils.DoubleUtils.isDouble;
+import static com.senne.oneiros.tools.utils.InventoryUtils.openInvSync;
+import static java.lang.Double.parseDouble;
 
 public class EquipmentSlotsUIEvent implements Listener {
 
@@ -94,38 +99,25 @@ public class EquipmentSlotsUIEvent implements Listener {
         ItemStack item;
         ItemMeta meta;
         Attribute attribute = ActiveItemCreation.getActiveItem(uuid).getAttribute(inv.getItem(13).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Oneiros.getPlugin(), "attribute"), new NamespacedKeyDataType()));
-        List<EquipmentSlot> slots = new ArrayList<>();
 
-        boolean doubleAttribute = attribute instanceof EquipmentDoubleAttribute;
+        if (!(attribute instanceof EquipmentAmountAttribute)) return;
 
-        if (attribute instanceof EquipmentDoubleAttribute) slots = ((EquipmentDoubleAttribute) attribute).getSlots();
-        if (attribute instanceof EquipmentIntAttribute) slots = ((EquipmentIntAttribute) attribute).getSlots();
+        EquipmentAmountAttribute eqAmAttribute = (EquipmentAmountAttribute) attribute;
+        List<EquipmentSlot> slots = eqAmAttribute.getSlots();
 
         item = inv.getItem(slot);
         meta = item.getItemMeta();
 
         if (slots.contains(eqSlot)) {
             meta.lore(List.of(Component.text("■ Click to add!").color(NamedTextColor.YELLOW).decoration(TextDecoration.ITALIC, false)));
-            if (doubleAttribute) {
-                ((EquipmentDoubleAttribute) attribute).removeSlot(eqSlot);
-            } else {
-                ((EquipmentIntAttribute) attribute).removeSlot(eqSlot);
-            }
+            eqAmAttribute.removeSlot(eqSlot);
         } else {
             String data = attribute.getKey().asString() + ";" + eqSlot;
-            String key;
-
-            if (doubleAttribute) {
-                key = "equipmentdoubleattribute";
-            } else {
-                key = "equipmentintattribute";
-            }
 
             player.closeInventory();
-            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), key), data, p -> {
-                AttributeUI attributeUI = new AttributeUI(p, 1);
-                p.openInventory(attributeUI.getInventory());
-            }, "Enter the amount in the chat.");
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "equipmentamountattribute"), data,
+                    p -> openInvSync(player, new AttributeUI(p, 1).getInventory()),
+                    new EquipmentSlotAmountSend(), "Enter the amount in the chat.");
         }
 
         item.setItemMeta(meta);
@@ -134,4 +126,34 @@ public class EquipmentSlotsUIEvent implements Listener {
         refreshExample(inv, uuid, attribute.getKey());
     }
 
+}
+
+class EquipmentSlotAmountSend implements AsyncRunnableSend {
+
+    @Override
+    public void run(Player player, NamespacedKey namespacedKey, Component message, String data) {
+        String input = PlainTextComponentSerializer.plainText().serialize(message);
+
+        NamespacedKey key = NamespacedKey.fromString(data.split(";", 2)[0]);
+        EquipmentSlot slot = EquipmentSlot.valueOf(data.split(";", 2)[1]);
+        EquipmentAmountAttribute attribute = (EquipmentAmountAttribute) ActiveItemCreation.getActiveItem(player.getUniqueId()).getAttribute(key);
+
+        if (!isDouble(input)) {
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "equipmentdoubleattribute"), data,
+                    p -> openInvSync(player, new AttributeUI(p, 1).getInventory()),
+                    new EquipmentSlotAmountSend(), "Please enter a number!");
+            return;
+        }
+
+        double amount = parseDouble(input);
+        if (amount < attribute.getMin() || amount > attribute.getMax()) {
+            ChatInputAPI.newInput(player, new NamespacedKey(Oneiros.getPlugin(), "equipmentdoubleattribute"), data,
+                    p -> openInvSync(player, new AttributeUI(p, 1).getInventory()),
+                    new EquipmentSlotAmountSend(), "Please enter a number between " + attribute.getMin() + " and " + attribute.getMax() + "!");
+            return;
+        }
+
+        attribute.setAmount(slot, amount);
+        openInvSync(player, new EquipmentSlotsUI(player, attribute.getKey()).getInventory());
+    }
 }

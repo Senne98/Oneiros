@@ -16,12 +16,16 @@ public class ChatInputAPI {
         ChatHandler.removeActiveChat(uuid);
     }
 
-    public static void newInput(Player p, NamespacedKey namespacedKey, String data, Runnable onCancel) {
-        ChatHandler.addActiveChat(p.getUniqueId(), namespacedKey, data, onCancel);
+    public static void cancelInput(UUID uuid) {
+        ChatHandler.runCancel(uuid);
     }
 
-    public static void newInput(Player p, NamespacedKey namespacedKey, String data, Runnable onCancel, String message, String cancelMessage) {
-        ChatHandler.addActiveChat(p.getUniqueId(), namespacedKey, data, onCancel);
+    public static void newInput(Player p, NamespacedKey namespacedKey, String data, AsyncRunnableCancel onCancel, AsyncRunnableSend onSend) {
+        ChatHandler.addActiveChat(p.getUniqueId(), namespacedKey, data, onCancel, onSend);
+    }
+
+    public static void newInput(Player p, NamespacedKey namespacedKey, String data, AsyncRunnableCancel onCancel, AsyncRunnableSend onSend, String message, String cancelMessage) {
+        ChatHandler.addActiveChat(p.getUniqueId(), namespacedKey, data, onCancel, onSend);
         p.sendMessage(Component.text(message).decoration(TextDecoration.ITALIC, false));
         p.sendMessage(Component.text("[Cancel]")
                 .hoverEvent(HoverEvent.showText(Component.text(cancelMessage).color(NamedTextColor.RED)))
@@ -30,20 +34,20 @@ public class ChatInputAPI {
                 .clickEvent(ClickEvent.runCommand("/chatinputcancel")));
     }
 
-    public static void newInput(Player p, NamespacedKey namespacedKey, Runnable onCancel, String message, String cancelMessage) {
-        newInput(p, namespacedKey, "", onCancel, message, cancelMessage);
+    public static void newInput(Player p, NamespacedKey namespacedKey, AsyncRunnableCancel onCancel, AsyncRunnableSend onSend, String message, String cancelMessage) {
+        newInput(p, namespacedKey, "", onCancel, onSend, message, cancelMessage);
     }
 
-    public static void newInput(Player p, NamespacedKey namespacedKey, String data, Runnable onCancel, String message) {
-        newInput(p, namespacedKey, data, onCancel, message, "Cancel input!");
+    public static void newInput(Player p, NamespacedKey namespacedKey, String data, AsyncRunnableCancel onCancel, AsyncRunnableSend onSend, String message) {
+        newInput(p, namespacedKey, data, onCancel, onSend, message, "Cancel input!");
     }
 
-    public static void newInput(Player p, NamespacedKey namespacedKey, Runnable onCancel, String message) {
-        newInput(p, namespacedKey, "", onCancel, message, "Cancel input!");
+    public static void newInput(Player p, NamespacedKey namespacedKey, AsyncRunnableCancel onCancel, AsyncRunnableSend onSend, String message) {
+        newInput(p, namespacedKey, "", onCancel, onSend, message, "Cancel input!");
     }
 
-    public static void newInput(Player p, NamespacedKey namespacedKey, Runnable onCancel) {
-        ChatHandler.addActiveChat(p.getUniqueId(), namespacedKey, "", onCancel);
+    public static void newInput(Player p, NamespacedKey namespacedKey, AsyncRunnableCancel onCancel, AsyncRunnableSend onSend) {
+        ChatHandler.addActiveChat(p.getUniqueId(), namespacedKey, "", onCancel, onSend);
         p.sendMessage(Component.text("[Cancel]")
                 .hoverEvent(HoverEvent.showText(Component.text("Cancel input!").color(NamedTextColor.RED)))
                 .decoration(TextDecoration.ITALIC, false)

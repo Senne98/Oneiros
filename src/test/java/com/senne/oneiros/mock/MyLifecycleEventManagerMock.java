@@ -11,4 +11,4 @@ public class MyLifecycleEventManagerMock<O extends LifecycleEventOwner> extends 
         this.registerEventHandler(eventType.newHandler(eventHandler));
     }
 
-    }
+}
