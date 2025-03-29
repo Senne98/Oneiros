@@ -126,6 +126,6 @@ public abstract class EquipmentAmountAttribute implements VariableAttribute {
         if (min != attribute.min) return false;
         if (max != attribute.max) return false;
 
-        return super.equals(j);
+        return true;
     }
 }

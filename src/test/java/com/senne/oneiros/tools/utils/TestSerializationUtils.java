@@ -92,7 +92,14 @@ public class TestSerializationUtils {
         armor.setAmount(EquipmentSlot.CHEST, 1);
         armor.setAmount(EquipmentSlot.BODY, 2);
 
-        assertTrue(armor.equals(deserialize(serialize(armor.copy()), Attribute.class)));
+        assertEquals(armor.getSlots().toString(), ((Armor) deserialize(serialize(armor.copy()), Attribute.class)).getSlots().toString());
+        assertEquals(armor.getName().toString(), ((Armor) deserialize(serialize(armor.copy()), Attribute.class)).getName().toString());
+        assertEquals(armor.getIcon().toString(), ((Armor) deserialize(serialize(armor.copy()), Attribute.class)).getIcon().toString());
+        assertEquals(armor.getKey().toString(), ((Armor) deserialize(serialize(armor.copy()), Attribute.class)).getKey().toString());
+        assertEquals(armor.getMax(), ((Armor) deserialize(serialize(armor.copy()), Attribute.class)).getMax());
+        assertEquals(armor.getMin(), ((Armor) deserialize(serialize(armor.copy()), Attribute.class)).getMin());
+
+        assertEquals(armor, deserialize(serialize(armor.copy()), Attribute.class));
 
         Hidetooltip attribute2 = new Hidetooltip();
         attribute2.setBool(true);
